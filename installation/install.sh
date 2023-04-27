@@ -88,13 +88,36 @@ fi;
 source ~/.bashrc;
 
 
+source ~/.bashrc
+if ! cat ~/.bashrc | grep batchonvert;
+then
+  echo 'alias zseg=$HOME/OME_Zarr_Tools/ZarrSeg/zseg' >> ~/.bashrc;
+fi;
+source ~/.bashrc;
+
+
+#### configure mc and batchconvert
+if ! cat $HOME/.bashrc | grep ACCESSKEY &> /dev/null;
+then
+	echo ACCESSKEY=$1 >> $HOME/.bashrc;
+fi;
+
+if ! cat $HOME/.bashrc | grep SECRETKEY &> /dev/null;
+then
+	echo SECRETKEY=$2 >> $HOME/.bashrc;
+fi;
+
+source $HOME/.bashrc;
+
 chmod -R a+rwx $SCRIPTPATH/../apps;
 mc alias set s3minio https://s3.embl.de $ACCESSKEY $SECRETKEY;
+batchconvert configure_s3_remote --remote s3minio --url https://s3.embl.de --access $ACCESSKEY --secret $SECRETKEY --bucket ome-zarr-course
 
+
+source $HOME/.bashrc;
 
 
 ### Make sure the correct python is used in the batchconvert script
-
 v_info=$( python --version )
 VP=${v_info:7:1}
 
