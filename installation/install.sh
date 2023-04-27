@@ -97,7 +97,7 @@ then
 fi;
 source ~/.bashrc;
 
-
+### comment
 #### configure mc and batchconvert
 if ! cat $HOME/.bashrc | grep ACCESSKEY &> /dev/null;
 then
