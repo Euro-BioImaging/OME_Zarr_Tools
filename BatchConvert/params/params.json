@@ -1,0 +1,22 @@
+{
+  "in_path": "fair_workshop/JPEGs",
+  "out_path": "/home/oezdemir/PycharmProjects/nfprojects/results/zarr/res4",
+  "pattern": "",
+  "profile": "conda",
+  "source_type": "s3",
+  "dest_type": "local",
+  "S3REMOTE": "s3",
+  "S3ENDPOINT": "https://s3.embl.de",
+  "S3BUCKET": "eosc-future",
+  "S3ACCESS": "eosc-future-user",
+  "S3SECRET": "w2xx9EatWwmtsrbewt3LEfiGB",
+  "BIA_REMOTE": "<yourbiaremote>",
+  "queue_size": "50",
+  "submit_rate_limit": "10/2min",
+  "cluster_options": "--mem-per-cpu=3140 --cpus-per-task=16",
+  "time": "6h",
+  "output_type": "omezarr",
+  "reject_pattern": "",
+  "merge_files": "True",
+  "concatenation_order": "t"
+}

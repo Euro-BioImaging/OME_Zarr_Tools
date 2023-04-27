@@ -1,0 +1,8 @@
+name: nflow
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - nextflow ~= 22.10.1.5828
+

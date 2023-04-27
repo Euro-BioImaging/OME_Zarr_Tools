@@ -1,0 +1,8 @@
+name: minio
+channels:
+  - conda-forge
+  - joshmoore
+  - defaults
+dependencies:
+  - go-mc
+

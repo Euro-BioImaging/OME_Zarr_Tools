@@ -1,0 +1,18 @@
+{
+  "in_path": "placehold",
+  "out_path": "placehold",
+  "pattern": "",
+  "profile": "standard",
+  "source_type": "local",
+  "dest_type": "local",
+  "S3REMOTE": "<yours3remote>",
+  "S3ENDPOINT": "<yours3endpoint>",
+  "S3BUCKET": "<yourbucket>",
+  "S3ACCESS": "<youraccess>",
+  "S3SECRET": "<yoursecret>",
+  "BIA_REMOTE": "<yourbiaremote>",
+  "queue_size": "50",
+  "submit_rate_limit": "10/2min",
+  "cluster_options": "--mem-per-cpu=3140 --cpus-per-task=16",
+  "time": "6h"
+}
