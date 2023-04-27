@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 SCRIPTPATH=$( dirname -- ${BASH_SOURCE[0]}; )
 source $SCRIPTPATH/installation/_install.sh;
 source ~/.bashrc;
