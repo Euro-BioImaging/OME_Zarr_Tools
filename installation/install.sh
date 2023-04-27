@@ -89,9 +89,11 @@ source ~/.bashrc;
 
 
 source ~/.bashrc
-if ! cat ~/.bashrc | grep batchonvert;
+if ! cat ~/.bashrc | grep zseg;
 then
   echo 'alias zseg=$HOME/OME_Zarr_Tools/ZarrSeg/zseg' >> ~/.bashrc;
+  chmod 777 $HOME/OME_Zarr_Tools/ZarrSeg/main.py;
+  chmod 777 $HOME/OME_Zarr_Tools/ZarrSeg/zseg;
 fi;
 source ~/.bashrc;
 
