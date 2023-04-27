@@ -104,6 +104,7 @@ if __name__ == '__main__':
     else:
         credentials = None
 
+    context = 'local'
     if prompt == 'threshold' or prompt == 'postprocess':
         if args.remote:
             context = 'remote'
