@@ -4,5 +4,5 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - nextflow ~= 22.10.1.5828
+  - nextflow ~= 22.10.6
 
