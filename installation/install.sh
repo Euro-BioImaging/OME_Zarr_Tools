@@ -1,6 +1,10 @@
-#! /bin/bash
+#!/usr/bin/env bash
 
-SCRIPTPATH=$( dirname -- ${BASH_SOURCE[0]}; );
+rel_SCRIPTPATH=$( dirname -- ${BASH_SOURCE[0]}; );
+source $rel_SCRIPTPATH/utils.sh
+
+SCRIPTPATH=$(abspath $rel_SCRIPTPATH);
+chmod -R 777 $SCRIPTPATH;
 
 source ~/.bashrc
 mkdir -p ~/Applications;
@@ -84,6 +88,8 @@ fi;
 source ~/.bashrc;
 
 
+chmod -R a+rwx $SCRIPTPATH/../apps;
+mc alias set s3minio https://s3.embl.de $ACCESSKEY $SECRETKEY;
 
 
 
