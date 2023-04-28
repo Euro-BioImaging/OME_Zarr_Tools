@@ -117,7 +117,7 @@ fi;
 
 source $HOME/.bashrc;
 
-chmod -R a+rwx $ROOT/../apps;
+chmod -R a+rwx $ROOT/apps;
 mc alias set s3minio https://s3.embl.de $ACCESSKEY $SECRETKEY;
 
 source $HOME/.bashrc;
