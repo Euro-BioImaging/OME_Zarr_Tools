@@ -4,20 +4,29 @@ rel_SCRIPTPATH=$( dirname -- ${BASH_SOURCE[0]}; );
 source $rel_SCRIPTPATH/utils/utils.sh
 
 ROOT=$(abspath $rel_SCRIPTPATH);
+#APPS="$ROOT/apps"
 
+# Add root path as an environmental variable
 if ! echo $PATH | tr ":" "\n" | grep "OME_Zarr_Tools" &> /dev/null;
 then
-	echo PATH="$ROOT:$PATH" >> $HOME/.bashrc;
+	echo "export OZT=$(abspath $rel_SCRIPTPATH)" >> $HOME/.bashrc;
+  source ~/.bashrc
+fi;
+
+# Add the apps folder to the path
+if ! echo $PATH | tr ":" "\n" | grep "apps" &> /dev/null;
+then
+	echo "export PATH=$ROOT/apps:$PATH" >> $HOME/.bashrc;
   source ~/.bashrc
 fi;
 
 chmod -R 777 $ROOT;
-
 source ~/.bashrc
+
 mkdir -p ~/Applications;
 cd ~/Applications;
 
-# Make sure FIJI is installed and the MoBIE plugin exists 
+# Make sure FIJI is installed and the MoBIE plugin exists
 if ! ls | grep Fiji.app &> /dev/null;
 then
 	wget https://downloads.imagej.net/fiji/latest/fiji-linux64.zip;
@@ -29,12 +38,6 @@ then
 	echo 'alias fiji=$HOME/Applications/Fiji.app/ImageJ-linux64' >> ~/.bashrc;
 fi;
 
-# if miniconda3 is not in the path, add it there:
-if ! echo $PATH | tr ":" "\n" | grep "conda" &> /dev/null;
-then
-	echo PATH="$HOME/miniconda3/bin:$PATH" >> $HOME/.bashrc;
-fi;
-
 # check if conda Miniconda3 already exists, otherwise download it
 if ! ls | grep Miniconda3 &> /dev/null;
 then
@@ -43,8 +46,14 @@ else
 	echo "Miniconda3 is already downloaded."
 fi;
 
+# if miniconda3 is not in the path, add it there:
+if ! echo $PATH | tr ":" "\n" | grep "conda" &> /dev/null;
+then
+	echo PATH="$HOME/miniconda3/bin:$PATH" >> $HOME/.bashrc;
+fi;
+
 # grant permission for miniconda envs file and install miniconda
-if ! command -v conda &> /dev/null; 
+if ! command -v conda &> /dev/null;
 then
 	chmod +x Miniconda3-latest-Linux-x86_64.sh;
 	./Miniconda3-latest-Linux-x86_64.sh -b -u;
@@ -55,62 +64,42 @@ fi;
 cd ~
 
 # Now create the environments from the yml files
-
-source ~/.bashrc
 if ! ls ~/miniconda3/envs | grep minio &> /dev/null;
-then 	
+then
 	conda env create -f $ROOT/envs/minio_env.yml;
-	echo 'alias mc=$HOME/OME_Zarr_Tools/apps/mc.sh' >> ~/.bashrc;
 fi;
 
-source ~/.bashrc
 if ! ls ~/miniconda3/envs | grep bf2raw &> /dev/null;
-then 	
+then
 	conda env create -f $ROOT/envs/bf2raw_env.yml;
-	echo 'alias bioformats2raw=$HOME/OME_Zarr_Tools/apps/bioformats2raw.sh' >> ~/.bashrc;
-	echo 'alias tree=$HOME/OME_Zarr_Tools/apps/tree.sh' >> ~/.bashrc
 fi;
 
-source ~/.bashrc
 if ! ls ~/miniconda3/envs | grep ZarrSeg &> /dev/null;
-then 	
+then
 	conda env create -f $ROOT/envs/ZarrSeg.yml;
-	echo 'alias napari=$HOME/OME_Zarr_Tools/apps/napari.sh' >> ~/.bashrc;
-	echo 'alias ome_zarr=$HOME/OME_Zarr_Tools/apps/ome_zarr.sh' >> ~/.bashrc
-#	echo 'alias ome_zarr=$HOME/OME_Zarr_Tools/apps/zseg.sh' >> ~/.bashrc
 fi;
 
-source ~/.bashrc
 if ! ls ~/miniconda3/envs | grep nflow &> /dev/null;
 then
   conda env create -f $ROOT/envs/nextflow_env.yml;
-  if ! echo $PATH | tr ":" "\n" | grep "BatchConvert" &> /dev/null;
-  then
-    echo 'function nextflow() {\n$ROOT/OME_Zarr_Tools/apps/nextflow.sh\n}' >> ~/.bashrc
-  fi
 fi;
 
-source ~/.bashrc
-if ! cat ~/.bashrc | grep batchonvert;
+
+# Add batchconvert and zseg to path
+
+# Add the apps folder to the path
+if ! echo $PATH | tr ":" "\n" | grep "BatchConvert" &> /dev/null;
 then
-  if ! echo $PATH | tr ":" "\n" | grep "BatchConvert" &> /dev/null;
-  then
-    echo 'alias batchconvert=$HOME/OME_Zarr_Tools/BatchConvert/batchconvert.sh' >> ~/.bashrc;
-  fi
+	echo "export PATH=$ROOT/BatchConvert:$PATH" >> $HOME/.bashrc;
+  source ~/.bashrc
 fi;
-source ~/.bashrc;
 
 
-source ~/.bashrc
-if ! cat ~/.bashrc | grep zseg;
+if ! echo $PATH | tr ":" "\n" | grep "ZarrSeg" &> /dev/null;
 then
-  if ! echo $PATH | tr ":" "\n" | grep "ZarrSeg" &> /dev/null;
-  then
-    echo 'alias zseg=$HOME/OME_Zarr_Tools/ZarrSeg/zseg' >> ~/.bashrc;
-  fi
-  chmod 777 $HOME/OME_Zarr_Tools/ZarrSeg/main.py;
-  chmod 777 $HOME/OME_Zarr_Tools/ZarrSeg/zseg;
-fi;
+	echo "export PATH=$ROOT/ZarrSeg:$PATH" >> $HOME/.bashrc;
+fi
+
 source ~/.bashrc;
 
 #### configure mc
