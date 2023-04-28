@@ -146,7 +146,7 @@ fi
 # configure batchconvert s3
 batchconvert configure_s3_remote --remote s3minio --url https://s3.embl.de --access $ACCESSKEY --secret $SECRETKEY --bucket ome-zarr-course
 # configure zseg s3
-zseg configure_s3_remote --url s3minio --access T0XMlxMdq8C6rSxurrdqMqHNrhyhC4f0 --secret dRFXoR852egFtp3lC9NJPYjpPaCBNRa8 --region eu-west-2
+zseg configure_s3_remote --url s3.embl.de --access T0XMlxMdq8C6rSxurrdqMqHNrhyhC4f0 --secret dRFXoR852egFtp3lC9NJPYjpPaCBNRa8 --region eu-west-2
 
 
 
