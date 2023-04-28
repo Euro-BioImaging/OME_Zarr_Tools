@@ -477,3 +477,4 @@ if __name__ == "__main__":
         shutil.copy(backup_params, default_params)
         with open(os.path.join(scriptpath,  '.process'), 'w') as writer:
             writer.write('resetted')
+

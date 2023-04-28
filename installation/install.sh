@@ -98,7 +98,7 @@ fi;
 source ~/.bashrc;
 
 ### comment
-#### configure mc and batchconvert
+#### configure mc
 if ! cat $HOME/.bashrc | grep ACCESSKEY &> /dev/null;
 then
 	echo ACCESSKEY=$1 >> $HOME/.bashrc;
@@ -113,11 +113,8 @@ source $HOME/.bashrc;
 
 chmod -R a+rwx $SCRIPTPATH/../apps;
 mc alias set s3minio https://s3.embl.de $ACCESSKEY $SECRETKEY;
-batchconvert configure_s3_remote --remote s3minio --url https://s3.embl.de --access $ACCESSKEY --secret $SECRETKEY --bucket ome-zarr-course
-
 
 source $HOME/.bashrc;
-
 
 ### Make sure the correct python is used in the batchconvert script
 v_info=$( python --version )
@@ -144,5 +141,7 @@ elif ! [[ $VP == 3 ]];
         exit
     fi
 fi
+# configure batchconvert s3
+batchconvert configure_s3_remote --remote s3minio --url https://s3.embl.de --access $ACCESSKEY --secret $SECRETKEY --bucket ome-zarr-course
 
 
