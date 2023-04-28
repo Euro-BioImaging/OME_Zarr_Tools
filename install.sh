@@ -85,8 +85,6 @@ then
 fi;
 
 # Add batchconvert and zseg to path
-
-# Add the apps folder to the path
 if ! echo $PATH | tr ":" "\n" | grep "BatchConvert" &> /dev/null;
 then
 	echo "export PATH=$ROOT/BatchConvert:$PATH" >> $HOME/.bashrc;
@@ -101,7 +99,7 @@ fi
 
 source ~/.bashrc;
 
-#### configure mc
+#### make access and secret keys universally available
 if ! cat $HOME/.bashrc | grep ACCESSKEY &> /dev/null;
 then
 	echo ACCESSKEY=$1 >> $HOME/.bashrc;
@@ -114,6 +112,7 @@ fi;
 
 source $HOME/.bashrc;
 
+### configure mc
 chmod -R a+rwx $ROOT/apps;
 mc alias set s3minio https://s3.embl.de $ACCESSKEY $SECRETKEY;
 
@@ -146,5 +145,9 @@ elif ! [[ $VP == 3 ]];
 fi
 # configure batchconvert s3
 batchconvert configure_s3_remote --remote s3minio --url https://s3.embl.de --access $ACCESSKEY --secret $SECRETKEY --bucket ome-zarr-course
+# configure zseg s3
+zseg configure_s3_remote --url s3minio --access T0XMlxMdq8C6rSxurrdqMqHNrhyhC4f0 --secret dRFXoR852egFtp3lC9NJPYjpPaCBNRa8 --region eu-west-2
+
+
 
 
