@@ -12,6 +12,7 @@ from ZarrSegment import ZarrSegment
 
 if __name__ == '__main__':
     s3_params = ["endpoint", "key", "secret", "region"]
+    commands = ['threshold', 'postprocess', 'configure_s3_remote']
 
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers()
@@ -41,17 +42,12 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    # if args.credentials is None:
-    #     print('None is accepted')
-    # else:
-    #     print(args.credentials)
-
-    prompt = str(sys.argv[1])
-
-    # (key = credentials['key'],
-    # secret = credentials['secret'],
-    # endpoint = credentials['endpoint'],
-    # client_kwargs = dict(region_name = credentials['region']))
+    if len(sys.argv) > 0:
+        prompt = str(sys.argv[1])
+        if prompt not in commands:
+            raise ValueError('Command must be either of: {}'.format(commands))
+    else:
+        raise ValueError('Command is missing. Either of the following commands is needed.{}'.format(commands))
 
     if prompt == 'configure_s3_remote':
         url_prompt = 'enter url:\nEnter "skip" or "s" if you would like to keep the current value\n'

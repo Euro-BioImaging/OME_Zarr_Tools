@@ -1,10 +1,17 @@
 #!/usr/bin/env bash
 
 rel_SCRIPTPATH=$( dirname -- ${BASH_SOURCE[0]}; );
-source $rel_SCRIPTPATH/utils.sh
+source $rel_SCRIPTPATH/utils/utils.sh
 
-SCRIPTPATH=$(abspath $rel_SCRIPTPATH);
-chmod -R 777 $SCRIPTPATH;
+ROOT=$(abspath $rel_SCRIPTPATH);
+
+if ! echo $PATH | tr ":" "\n" | grep "OME_Zarr_Tools" &> /dev/null;
+then
+	echo PATH="$ROOT:$PATH" >> $HOME/.bashrc;
+  source ~/.bashrc
+fi;
+
+chmod -R 777 $ROOT;
 
 source ~/.bashrc
 mkdir -p ~/Applications;
@@ -36,7 +43,7 @@ else
 	echo "Miniconda3 is already downloaded."
 fi;
 
-# grant permission for miniconda installation file and install miniconda 
+# grant permission for miniconda envs file and install miniconda
 if ! command -v conda &> /dev/null; 
 then
 	chmod +x Miniconda3-latest-Linux-x86_64.sh;
@@ -52,14 +59,14 @@ cd ~
 source ~/.bashrc
 if ! ls ~/miniconda3/envs | grep minio &> /dev/null;
 then 	
-	conda env create -f $SCRIPTPATH/minio_env.yml;
+	conda env create -f $ROOT/minio_env.yml;
 	echo 'alias mc=$HOME/OME_Zarr_Tools/apps/mc.sh' >> ~/.bashrc;
 fi;
 
 source ~/.bashrc
 if ! ls ~/miniconda3/envs | grep bf2raw &> /dev/null;
 then 	
-	conda env create -f $SCRIPTPATH/bf2raw_env.yml;
+	conda env create -f $ROOT/bf2raw_env.yml;
 	echo 'alias bioformats2raw=$HOME/OME_Zarr_Tools/apps/bioformats2raw.sh' >> ~/.bashrc;
 	echo 'alias tree=$HOME/OME_Zarr_Tools/apps/tree.sh' >> ~/.bashrc
 fi;
@@ -67,7 +74,7 @@ fi;
 source ~/.bashrc
 if ! ls ~/miniconda3/envs | grep ZarrSeg &> /dev/null;
 then 	
-	conda env create -f $SCRIPTPATH/ZarrSeg.yml;
+	conda env create -f $ROOT/ZarrSeg.yml;
 	echo 'alias napari=$HOME/OME_Zarr_Tools/apps/napari.sh' >> ~/.bashrc;
 	echo 'alias ome_zarr=$HOME/OME_Zarr_Tools/apps/ome_zarr.sh' >> ~/.bashrc
 #	echo 'alias ome_zarr=$HOME/OME_Zarr_Tools/apps/zseg.sh' >> ~/.bashrc
@@ -76,7 +83,7 @@ fi;
 source ~/.bashrc
 if ! ls ~/miniconda3/envs | grep nflow &> /dev/null;
 then
-	conda env create -f $SCRIPTPATH/nextflow_env.yml;
+	conda env create -f $ROOT/nextflow_env.yml;
 	echo 'alias nextflow=$HOME/OME_Zarr_Tools/apps/nextflow.sh' >> ~/.bashrc;
 fi;
 
@@ -97,7 +104,6 @@ then
 fi;
 source ~/.bashrc;
 
-### comment
 #### configure mc
 if ! cat $HOME/.bashrc | grep ACCESSKEY &> /dev/null;
 then
@@ -111,7 +117,7 @@ fi;
 
 source $HOME/.bashrc;
 
-chmod -R a+rwx $SCRIPTPATH/../apps;
+chmod -R a+rwx $ROOT/../apps;
 mc alias set s3minio https://s3.embl.de $ACCESSKEY $SECRETKEY;
 
 source $HOME/.bashrc;
@@ -123,8 +129,8 @@ VP=${v_info:7:1}
 if [[ $VP == 3 ]];
   then
     printf "The following python will be used to execute python commands in batchconvert script: $( which python ) \n"
-    if ! [ -f $SCRIPTPATH/..BatchConvert/pythonexe ];then
-	    ln -s $( which python ) $SCRIPTPATH/../BatchConvert/pythonexe;
+    if ! [ -f $ROOT/..BatchConvert/pythonexe ];then
+	    ln -s $( which python ) $ROOT/../BatchConvert/pythonexe;
     fi
 elif ! [[ $VP == 3 ]];
   then
@@ -133,8 +139,8 @@ elif ! [[ $VP == 3 ]];
       then
 	      printf "python3 was found at $( which python3 ) \n";
 	      printf "This python will be used in the batchconvert script \n";
-        if ! [ -f $SCRIPTPATH/..BatchConvert/pythonexe ];then
-	        ln -s $( which python3 ) $SCRIPTPATH/..BatchConvert/pythonexe;
+        if ! [ -f $ROOT/..BatchConvert/pythonexe ];then
+	        ln -s $( which python3 ) $ROOT/..BatchConvert/pythonexe;
         fi
       else
         printf "Looks like python3 does not exist on your system or is not on the path. Please make sure python3 exists and on the path. \n"
