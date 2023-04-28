@@ -80,12 +80,12 @@ then
 #	echo 'alias ome_zarr=$HOME/OME_Zarr_Tools/apps/zseg.sh' >> ~/.bashrc
 fi;
 
-source ~/.bashrc
-if ! ls ~/miniconda3/envs | grep nflow &> /dev/null;
-then
-	conda env create -f $ROOT/envs/nextflow_env.yml;
-	echo 'alias nextflow=$HOME/OME_Zarr_Tools/apps/nextflow.sh' >> ~/.bashrc;
-fi;
+#source ~/.bashrc
+#if ! ls ~/miniconda3/envs | grep nflow &> /dev/null;
+#then
+#	conda env create -f $ROOT/envs/nextflow_env.yml;
+#	echo 'alias nextflow=$HOME/OME_Zarr_Tools/apps/nextflow.sh' >> ~/.bashrc;
+#fi;
 
 source ~/.bashrc
 if ! cat ~/.bashrc | grep batchonvert;

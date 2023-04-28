@@ -2,7 +2,7 @@
 
 ## About
 
-This project contains materials for the practical on "Cloud hosted image data and cloud infrastructures" on 30.09.22 as part of the [NEUBIAS EOSC-Life Bioimage Analysis in the Cloud Workshop](http://eubias.org/NEUBIAS/training-schools/neubias-academy-home/defragmentation-training-school-2022/). The materials demonstrate working with OME-Zarr data located in S3 buckets. 
+This project contains materials for the practical on "Cloud hosted image data and cloud infrastructures" on 08.04.23 as part of the [NEUBIAS EOSC-Life Bioimage Analysis in the Cloud Workshop](http://eubias.org/NEUBIAS/training-schools/neubias-academy-home/defragmentation-training-school-2022/). The materials demonstrate working with OME-Zarr data located in S3 buckets. 
 
 
 ## Connect to the BAND cloud computer
@@ -34,13 +34,18 @@ If you did not stop the recent session you can simply
 
 For this practical we need several software to be installed:
 
-+ **napari_viewer** environment containing the napari package along with dependencies/plugins to support OME-Zarr format.
-
 + **bf2raw** environment containing the bioformats2raw package, which can be used to convert images into OME-Zarr format.
 
 + **minio** environment containing the minio client mc, which enables interaction with s3 buckets.
 
++ **nflow** environment containing the workflow management system nextflow.
+
++ **ZarrSeg** environment containing the napari package along with dependencies/plugins to support OME-Zarr format
+and our command line tool, ZarrSeg, for segmentation of OME-Zarr data.
+
 + **fiji** exectuable containing a plugin for opening the OME-Zarr format.
+
++ **batchconvert** executable for parallelised conversion of image data and file transfer between the local filesystem and the s3 buckets.
 
 To install the software you will need to launch your BAND cloud computer (see above) and use Firefox and the terminal window.
 
