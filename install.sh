@@ -84,7 +84,6 @@ then
   conda env create -f $ROOT/envs/nextflow_env.yml;
 fi;
 
-
 # Add batchconvert and zseg to path
 
 # Add the apps folder to the path

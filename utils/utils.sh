@@ -20,7 +20,3 @@ function abspath() {
       fi
   fi
 }
-
-function nextflow() {
-  $HOME/OME_Zarr_Tools/apps/nextflow.sh
-}
