@@ -59,14 +59,14 @@ cd ~
 source ~/.bashrc
 if ! ls ~/miniconda3/envs | grep minio &> /dev/null;
 then 	
-	conda env create -f $ROOT/minio_env.yml;
+	conda env create -f $ROOT/envs/minio_env.yml;
 	echo 'alias mc=$HOME/OME_Zarr_Tools/apps/mc.sh' >> ~/.bashrc;
 fi;
 
 source ~/.bashrc
 if ! ls ~/miniconda3/envs | grep bf2raw &> /dev/null;
 then 	
-	conda env create -f $ROOT/bf2raw_env.yml;
+	conda env create -f $ROOT/envs/bf2raw_env.yml;
 	echo 'alias bioformats2raw=$HOME/OME_Zarr_Tools/apps/bioformats2raw.sh' >> ~/.bashrc;
 	echo 'alias tree=$HOME/OME_Zarr_Tools/apps/tree.sh' >> ~/.bashrc
 fi;
@@ -74,7 +74,7 @@ fi;
 source ~/.bashrc
 if ! ls ~/miniconda3/envs | grep ZarrSeg &> /dev/null;
 then 	
-	conda env create -f $ROOT/ZarrSeg.yml;
+	conda env create -f $ROOT/envs/ZarrSeg.yml;
 	echo 'alias napari=$HOME/OME_Zarr_Tools/apps/napari.sh' >> ~/.bashrc;
 	echo 'alias ome_zarr=$HOME/OME_Zarr_Tools/apps/ome_zarr.sh' >> ~/.bashrc
 #	echo 'alias ome_zarr=$HOME/OME_Zarr_Tools/apps/zseg.sh' >> ~/.bashrc
@@ -83,7 +83,7 @@ fi;
 source ~/.bashrc
 if ! ls ~/miniconda3/envs | grep nflow &> /dev/null;
 then
-	conda env create -f $ROOT/nextflow_env.yml;
+	conda env create -f $ROOT/envs/nextflow_env.yml;
 	echo 'alias nextflow=$HOME/OME_Zarr_Tools/apps/nextflow.sh' >> ~/.bashrc;
 fi;
 
@@ -129,8 +129,8 @@ VP=${v_info:7:1}
 if [[ $VP == 3 ]];
   then
     printf "The following python will be used to execute python commands in batchconvert script: $( which python ) \n"
-    if ! [ -f $ROOT/..BatchConvert/pythonexe ];then
-	    ln -s $( which python ) $ROOT/../BatchConvert/pythonexe;
+    if ! [ -f $ROOT/BatchConvert/pythonexe ];then
+	    ln -s $( which python ) $ROOT/BatchConvert/pythonexe;
     fi
 elif ! [[ $VP == 3 ]];
   then
@@ -139,7 +139,7 @@ elif ! [[ $VP == 3 ]];
       then
 	      printf "python3 was found at $( which python3 ) \n";
 	      printf "This python will be used in the batchconvert script \n";
-        if ! [ -f $ROOT/..BatchConvert/pythonexe ];then
+        if ! [ -f $ROOT/BatchConvert/pythonexe ];then
 	        ln -s $( which python3 ) $ROOT/..BatchConvert/pythonexe;
         fi
       else
