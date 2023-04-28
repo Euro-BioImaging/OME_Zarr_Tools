@@ -83,14 +83,20 @@ fi;
 source ~/.bashrc
 if ! ls ~/miniconda3/envs | grep nflow &> /dev/null;
 then
-	conda env create -f $ROOT/envs/nextflow_env.yml;
-  echo 'function nextflow() {\n$ROOT/OME_Zarr_Tools/apps/nextflow.sh\n}' >> ~/.bashrc
+  conda env create -f $ROOT/envs/nextflow_env.yml;
+  if ! echo $PATH | tr ":" "\n" | grep "BatchConvert" &> /dev/null;
+  then
+    echo 'function nextflow() {\n$ROOT/OME_Zarr_Tools/apps/nextflow.sh\n}' >> ~/.bashrc
+  fi
 fi;
 
 source ~/.bashrc
 if ! cat ~/.bashrc | grep batchonvert;
 then
-  echo 'alias batchconvert=$HOME/OME_Zarr_Tools/BatchConvert/batchconvert.sh' >> ~/.bashrc;
+  if ! echo $PATH | tr ":" "\n" | grep "BatchConvert" &> /dev/null;
+  then
+    echo 'alias batchconvert=$HOME/OME_Zarr_Tools/BatchConvert/batchconvert.sh' >> ~/.bashrc;
+  fi
 fi;
 source ~/.bashrc;
 
@@ -98,7 +104,10 @@ source ~/.bashrc;
 source ~/.bashrc
 if ! cat ~/.bashrc | grep zseg;
 then
-  echo 'alias zseg=$HOME/OME_Zarr_Tools/ZarrSeg/zseg' >> ~/.bashrc;
+  if ! echo $PATH | tr ":" "\n" | grep "ZarrSeg" &> /dev/null;
+  then
+    echo 'alias zseg=$HOME/OME_Zarr_Tools/ZarrSeg/zseg' >> ~/.bashrc;
+  fi
   chmod 777 $HOME/OME_Zarr_Tools/ZarrSeg/main.py;
   chmod 777 $HOME/OME_Zarr_Tools/ZarrSeg/zseg;
 fi;
