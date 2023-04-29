@@ -13,7 +13,7 @@ batchconvert omezarr -st s3 -dt s3 --drop_series data/MFF data/ZARR/$USER;
 batchconvert omezarr -st s3 -dt s3 --drop_series --merge_files --concatenation_order t data/JPEG data/ZARR/$USER;
 
 ### Check what has changed at the s3 end:
-mc tree s3minio/ome-zarr-course/
+mc tree -d 2 s3minio/ome-zarr-course/
 
 ### Copy the Zarr data to the home folder
 mc mirror s3minio/ome-zarr-course/data/ZARR/$USER ~/data/ZARR;
