@@ -30,21 +30,23 @@ https://kitware.github.io/itk-vtk-viewer/app/?fileToLoad=https://s3.embl.de/ome-
 # add vizarr and neuroglancer
 
 
+### REMOTE SEGMENTATION 
+# Have a look at the Zarr data before segmenting
+mc tree -d 2 s3minio/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr
+napari --plugin napari-ome-zarr https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
+# Segment both channels
+zseg threshold -r -m otsu -c 1 -ch 0 -n otsu-c1-ch0 ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
+zseg threshold -r -m otsu -c 1 -ch 1 -n otsu-c1-ch1 ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
+# Have a look after segmenting
+napari --plugin napari-ome-zarr https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
+# Postprocess via mathematical morphology
+zseg postprocess -r -m binary_opening -f 1,1 -l otsu-c1-ch1 ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
+#zseg postprocess -r -m binary_opening -f 2,2 -l otsu-c1-ch1 ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
+# Have a final look
+mc tree -d 2 s3minio/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr
+ome_zarr info mc tree -d 2 s3minio/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr
+napari --plugin napari-ome-zarr https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
 
-### Segment data locally 
-zseg threshold -m otsu -c 1 -ch 1 -n otsu-c1-ch1 ~/data/ZARR/23052022_D3_0002_positiveCTRL.ome.zarr;
 
-zseg threshold -m ridler_median -c 1 -ch 1 -n rwm-c1-ch1 ~/data/ZARR/xyc_8bit__tub_h2b_cecog_battery.ome.zarr; 
-zseg threshold -m li -c 1 -ch 1 -n iso-c1-ch1 ~/data/ZARR/xyc_8bit__tub_h2b_cecog_battery.ome.zarr; #TODO fix sampling issue
-
-zseg postprocess -m binary_opening -f 2,2 -l rwm-1-ch1 ~/data/ZARR/xyc_8bit__tub_h2b_cecog_battery.ome.zarr;
-
-napari --plugin napari-ome-zarr ~/data/ZARR/xyc_8bit__tub_h2b_cecog_battery.ome.zarr
-
-### Segment data remotely 
-zseg threshold -m otsu -c 1 -n otsu-1 https://s3.embl.de/ome-zarr-course/data/ZARR/xyz_8bit_calibrated__fib_sem_crop_original.ome.zarr
-
-
-batchconvert omezarr --drop_series --merge_files --concatenation_order t ~/data/JPEG ~/data/ZARR;
 
 
