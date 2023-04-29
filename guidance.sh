@@ -7,10 +7,17 @@ mc ls s3minio/ome-zarr-course/data/
 
 ### Copy data to home folder
 cd ~;
-mc mirror s3minio/ome-zarr-course/data/ ./data;
+mc mirror s3minio/ome-zarr-course/data/ ~/data;
 
-### Convert locally
+### Convert TIFF data locally
 batchconvert omezarr --drop_series ~/data/TIFF ~/data/ZARR;
+
+### Convert JPEGs by merging them to a single time series
+batchconvert omezarr --drop_series --merge_files --concatenation_order t ~/data/JPEG ~/data/ZARR;
+
+### Convert OIRs by merging them to several time series
+batchconvert omezarr --drop_series --merge_files --concatenation_order t ~/data/OIR ~/data/ZARR;
+
 
 ### Visualise locally with napari
 napari --plugin napari-ome-zarr ~/data/ZARR/xyzct_8bit__mitosis.ome.zarr
@@ -21,7 +28,10 @@ fiji ;
 
 
 ### Convert data at the s3 end
-batchconvert omezarr -st s3 -dt s3 --drop_series data/TIFF data/ZARR;
+batchconvert omezarr -dt s3 --drop_series data/TIFF data/$USER;
+### Convert by merging
+batchconvert omezarr -dt s3 --drop_series --merge_files --concatenation_order t data/SERIES_TIFF data/$USER;
+
 
 ### Check whether we have the converted data at the s3 end:
 mc ls s3minio/ome-zarr-course/data/ ;
