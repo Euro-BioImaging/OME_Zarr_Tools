@@ -25,8 +25,8 @@ batchconvert omezarr -st s3 -dt s3 --drop_series data/TIFF data/ZARR;
 ### Check whether we have the converted data at the s3 end:
 mc ls s3minio/ome-zarr-course/data/ ;
 napari --plugin napari-ome-zarr https://s3.embl.de/ome-zarr-course/data/ZARR/xyzct_8bit__mitosis.ome.zarr;
-
-
+### view via itk-vtk-viewer
+https://kitware.github.io/itk-vtk-viewer/app/?fileToLoad=https://s3.embl.de/ome-zarr-course/data/ZARR/xyz_8bit__nucleus.ome.zarr/
 
 
 
