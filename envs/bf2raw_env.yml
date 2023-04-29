@@ -1,12 +1,12 @@
 name: bf2raw
 channels:
   - ome
-  - ome/label/pre
   - conda-forge
+  - joshmoore
   - defaults
+  - hcc
 dependencies:
-  - bioformats2raw = 0.5.0
-  - blosc
-  - openjdk > 12.0.0
+  - python ~= 3.9.0
+  - bioformats2raw
+  - bftools
   - tree
-#
