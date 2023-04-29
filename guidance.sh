@@ -20,13 +20,13 @@ mc mirror s3minio/ome-zarr-course/data/ZARR/$USER ~/data/ZARR;
 
 ### Visualise locally and remotely with napari
 napari --plugin napari-ome-zarr ~/data/ZARR/xyzct_8bit__mitosis.ome.zarr
-napari --plugin napari-ome-zarr https://s3.embl.de/ome-zarr-course/data/ZARR/xyzct_8bit__mitosis.ome.zarr
+napari --plugin napari-ome-zarr https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/xyzct_8bit__mitosis.ome.zarr
 
 ### Visualise locally with fiji
 fiji ;
 
 ### Other viewing options
-https://kitware.github.io/itk-vtk-viewer/app/?fileToLoad=https://s3.embl.de/ome-zarr-course/data/ZARR/xyz_8bit__nucleus.ome.zarr
+https://kitware.github.io/itk-vtk-viewer/app/?fileToLoad=https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/xyz_8bit__nucleus.ome.zarr
 # add vizarr and neuroglancer
 
 
