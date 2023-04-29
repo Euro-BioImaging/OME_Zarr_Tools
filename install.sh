@@ -13,13 +13,6 @@ then
   source ~/.bashrc
 fi;
 
-# Add the apps folder to the path
-if ! echo $PATH | tr ":" "\n" | grep "apps" &> /dev/null;
-then
-	echo "export PATH=$ROOT/apps:$PATH" >> $HOME/.bashrc;
-  source ~/.bashrc
-fi;
-
 chmod -R 777 $ROOT;
 source ~/.bashrc
 
@@ -46,12 +39,6 @@ else
 	echo "Miniconda3 is already downloaded."
 fi;
 
-# if miniconda3 is not in the path, add it there:
-if ! echo $PATH | tr ":" "\n" | grep "conda" &> /dev/null;
-then
-	echo PATH="$HOME/miniconda3/bin:$PATH" >> $HOME/.bashrc;
-fi;
-
 # grant permission for miniconda envs file and install miniconda
 if ! command -v conda &> /dev/null;
 then
@@ -59,6 +46,17 @@ then
 	./Miniconda3-latest-Linux-x86_64.sh -b -u;
 else
 	echo "Miniconda3 is already installed."
+fi;
+
+# if miniconda3 is not in the path, add it there:
+if ! echo $PATH | tr ":" "\n" | grep "conda" &> /dev/null;
+then
+	echo PATH="$HOME/miniconda3/bin:$PATH" >> $HOME/.bashrc;
+	source ~/.bashrc
+	if ! command -v conda &> /dev/null;
+  then
+    echo "conda added to the PATH and is available."
+  fi;
 fi;
 
 cd ~
@@ -84,20 +82,30 @@ then
   conda env create -f $ROOT/envs/nextflow_env.yml;
 fi;
 
+# Add the apps folder to the path
+if ! echo $PATH | tr ":" "\n" | grep "apps" &> /dev/null;
+then
+	echo "export PATH=$ROOT/apps:$PATH" >> $HOME/.bashrc;
+  source ~/.bashrc
+  echo "bf2raw, mc, napari, nextflow, ome_zarr and tree added to the PATH"
+fi;
+
+
 # Add batchconvert and zseg to path
 if ! echo $PATH | tr ":" "\n" | grep "BatchConvert" &> /dev/null;
 then
 	echo "export PATH=$ROOT/BatchConvert:$PATH" >> $HOME/.bashrc;
   source ~/.bashrc
+  echo "BatchConvert added to the PATH"
 fi;
 
 
 if ! echo $PATH | tr ":" "\n" | grep "ZarrSeg" &> /dev/null;
 then
 	echo "export PATH=$ROOT/ZarrSeg:$PATH" >> $HOME/.bashrc;
+	source ~/.bashrc;
+	echo "ZarrSeg added to the PATH"
 fi
-
-source ~/.bashrc;
 
 #### make access and secret keys universally available
 if ! cat $HOME/.bashrc | grep ACCESSKEY &> /dev/null;
