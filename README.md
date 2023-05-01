@@ -73,7 +73,7 @@ Although we are doing this practical on a cloud computer, you should be able to 
 Check out what we have at our s3 bucket:
 
 ``` 
-mc tree s3minio/ome-zarr-course/
+mc tree -d 3 s3minio/ome-zarr-course/
 ``` 
 ``` 
 mc ls s3minio/ome-zarr-course/data/MFF/
