@@ -107,6 +107,8 @@ The `merge_files` flag will ensure the grouped conversion option and the `--conc
 #### Check what has changed at the s3 end after the conversion:
 ```
 mc tree -d 2 s3minio/ome-zarr-course/
+```
+```
 mc ls s3minio/ome-zarr-course/data/ZARR/$USER/
 ```
 
