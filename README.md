@@ -62,7 +62,7 @@ Please follow those steps:
 1. In Firefox browse to the Google Doc that has been shared with you (it is the same Google Doc that brought you to this page; you need to type the address starting with `tinyurl...` into the Firefox search bar and press enter)
 1. Copy the command (starting with `cd ~ ...`) from the Google Doc into the Terminal window and press enter
 1. This can take about 10 minutes.
-1. It should finish saying: `Added s3minio successfully.`
+1. It should finish saying: `Configuration of the default s3 credentials is complete`
 
 ## Practical
 
@@ -84,6 +84,20 @@ mc ls s3minio/ome-zarr-course/data/MFF/
 mc ls s3minio/ome-zarr-course/data/JPEG/
 ```
 
+``` 
+mc ls s3minio/ome-zarr-course/data/ZARR/common/
+```
+
+Check out the multiscales metadata for one of the existing OME-Zarr datasets:
+``` 
+mc cat s3minio/ome-zarr-course/data/ZARR/common/13457537T.zarr/.zattrs
+```
+
+Check out the array metadata for the highest resolution array:
+``` 
+mc cat s3minio/ome-zarr-course/data/ZARR/common/13457537T.zarr/0/.zarray
+```
+
 ### Conversion of the remote datasets
 
 The remote datasets can be converted in a parallelised manner by using the `batchconvert` tool. 
@@ -92,7 +106,7 @@ The remote datasets can be converted in a parallelised manner by using the `batc
 The followin command will map each input file in the `data/MFF` folder to a single OME-Zarr series, which will be located in a specific directory for each user. 
 
 ```
-batchconvert omezarr -st s3minio -dt s3minio --drop_series data/MFF data/ZARR/$USER;
+batchconvert omezarr -st s3 -dt s3 --drop_series data/MFF data/ZARR/$USER;
 ```
 Note that the `-st s3` option will make sure that the input path is searched for in the s3 bucket, while `-dt s3` will trigger the output files to be transferred to the s3 bucket under the output path.
 
@@ -100,7 +114,7 @@ Note that the `-st s3` option will make sure that the input path is searched for
 
 Another conversion mode will assume that the input files are part of the same series and thus will merge them along a specific axis during the conversion process.
 ```
-batchconvert omezarr -st s3minio -dt s3minio --drop_series --merge_files --concatenation_order t data/JPEG data/ZARR/$USER;
+batchconvert omezarr -st s3 -dt s3 --drop_series --merge_files --concatenation_order t data/JPEG data/ZARR/$USER;
 ```
 The `merge_files` flag will ensure the grouped conversion option and the `--concatenation_order t` option will make sure that the files will be merged along the time channel. 
 
