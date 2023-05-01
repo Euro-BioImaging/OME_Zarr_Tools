@@ -68,23 +68,31 @@ In general, everything that is formatted like this `command bla bla` should be c
 
 Although we are doing this practical on a cloud computer, you should be able to reproduce all of this on a local (Linux) computer. Here [are the installation instructions](https://git.embl.de/oezdemir/course_scripts/-/tree/main/installation), which you may have to modify a bit, but the conda installation parts should work on any system. Let us know if you need help with that!
 
-#### Inspection of the remote datasets
+### Inspection of the remote datasets
 
 Check out what we have at our s3 bucket:
 
 ``` 
 mc tree s3minio/ome-zarr-course/
+``` 
+``` 
 mc ls s3minio/ome-zarr-course/data/MFF/
+``` 
+``` 
 mc ls s3minio/ome-zarr-course/data/JPEG/
 ```
 
-#### Conversion of the remote datasets
+### Conversion of the remote datasets
 
 The remote datasets can be converted in a parallelised manner by using the `batchconvert` tool. 
+
+#### Independent conversion of the input files:
+The followin command will map each input file in the `data/MFF` folder to a single OME-Zarr series, which will be located in a specific directory for each user. 
+
 ```
 batchconvert omezarr -st s3 -dt s3 --drop_series data/MFF data/ZARR/$USER;
 ```
-This command will map each input file in the `data/MFF` folder to a single OME-Zarr series, which will be located in a specific directory for each user. 
+Note that the `-st s3` option will make sure that the input path is searched for in the s3 bucket, while `-dt s3` will trigger the output files to be transferred to the s3 bucket under the output path.
 
 #### Grouped conversion mode:
 
@@ -95,40 +103,83 @@ batchconvert omezarr -st s3 -dt s3 --drop_series --merge_files --concatenation_o
 The `merge_files` flag will ensure the grouped conversion option and the `--concatenation_order t` option will make sure that the files will be merged along the time channel. 
 
 #### Check what has changed at the s3 end after the conversion:
+```
 mc tree -d 2 s3minio/ome-zarr-course/
+```
 
-### Copy the Zarr data to the home folder
+#### Copy the converted Zarr data to the home folder
+```
 mc mirror s3minio/ome-zarr-course/data/ZARR/$USER ~/data/ZARR;
+```
 
-### Visualise locally and remotely with napari
-napari --plugin napari-ome-zarr ~/data/ZARR/xyzct_8bit__mitosis.ome.zarr
+### Visualisation
+
+#### Napari
+
+Visualise the remote data using Napari together with the napari-ome-zarr plugin.
+```
 napari --plugin napari-ome-zarr https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/xyzct_8bit__mitosis.ome.zarr
+```
+Optional: visualise the local OME-Zarr data:
+```
+napari --plugin napari-ome-zarr ~/data/ZARR/xyzct_8bit__mitosis.ome.zarr
+```
 
-### Visualise locally with fiji
+#### Fiji
 fiji ;
 
-### Other viewing options
-https://kitware.github.io/itk-vtk-viewer/app/?fileToLoad=https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/xyz_8bit__nucleus.ome.zarr
-# add vizarr and neuroglancer
+#### Web based viewing options
+https://kitware.github.io/itk-vtk-viewer/app/?fileToLoad=https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/xyz_8bit__nucleus.ome.zarr \
+**add vizarr and neuroglancer**
 
+### Segmentation 
 
-### REMOTE SEGMENTATION 
-# Have a look at the Zarr data before segmenting
+We can also segment remotely located OME-Zarr data without explicitly downloading it.
+#### Examine the dataset that is to be segmented:
+```
 mc tree -d 2 s3minio/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr
+```
+#### Also view the data
+```
 napari --plugin napari-ome-zarr https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
-# Segment both channels
+```
+
+#### Segment each channel
+We can use the zseg package for segmenting the data via thresholding.
+```
 zseg threshold -r -m otsu -c 1 -ch 0 -n otsu-c1-ch0 ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
-zseg threshold -r -m otsu -c 1 -ch 1 -n otsu-c1-ch1 ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
-# Have a look after segmenting
-napari --plugin napari-ome-zarr https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
-# Postprocess via mathematical morphology
-zseg postprocess -r -m binary_opening -f 1,1 -l otsu-c1-ch1 ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
-#zseg postprocess -r -m binary_opening -f 2,2 -l otsu-c1-ch1 ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
-# Have a final look
-mc tree -d 2 s3minio/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr
-ome_zarr info mc tree -d 2 s3minio/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr
-napari --plugin napari-ome-zarr https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
+```
+In this command, the `-r` flag ensures that the input path is searched at the s3 bucket. The `-m` option specifies the thresholding algorithm, which in this case is the Otsu algorithm. The `c` is a coefficient that is multiplied with the found threshold value to get the effective threshold. The `-ch` species the channel 0 for segmentation. The `-n` option specifies the name of the label path created. \
 
+Now also segment the other channel:
+```
+zseg threshold -r -m otsu -c 1 -ch 1 -n otsu-c1-ch1 ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
+```
+Note that the `-c` argument has been changed.
+
+#### Have a look at the segmented data 
+```
+napari --plugin napari-ome-zarr https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
+```
+
+It is also possible to apply binary postprocessing to the segmented data.
+#### Apply mathematical morphology
+```
+zseg postprocess -r -m binary_opening -f 1,1 -l otsu-c1-ch1 ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
+```
+Here the `-m` specifies the postprocessing method; the `-f` determines the footprint shape. Depending on the shape of the input data, it can be 2 or 3-dimensional. The `-l` can be used to decide on the name of the label image, that is subjected to the postprocessing. 
+
+#### Now examine the OME-Zarr data:
+```
+mc tree -d 2 s3minio/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr
+```
+```
+ome_zarr info mc tree -d 2 s3minio/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr
+```
+Also visualise the data:
+```
+napari --plugin napari-ome-zarr https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
+```
 
 
 
