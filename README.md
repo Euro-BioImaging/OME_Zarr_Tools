@@ -32,6 +32,8 @@ If you did not stop the recent session you can simply
 
 ## Software installation
 
+https://docs.google.com/document/d/17a0w8hPPNX6SV4UiK6uCWKXnKtN5aKno-dxROUDcoO8/edit
+
 For this practical we need several software to be installed:
 
 + **bf2raw** environment containing the bioformats2raw package, which can be used to convert images into OME-Zarr format.
