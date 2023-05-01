@@ -179,13 +179,13 @@ napari --plugin napari-ome-zarr https://s3.embl.de/ome-zarr-course/data/ZARR/$US
 #### Segment each channel
 We can use the zseg package for segmenting the data via thresholding.
 ```
-zseg threshold -r -m otsu -c 1 -ch 0 -n otsu-c1-ch0 ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
+zseg threshold -r -m otsu -c 1 -ch 0 -n otsu-c1-ch0 --colormap viridis ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
 ```
 In this command, the `-r` flag ensures that the input path is searched at the s3 bucket. The `-m` option specifies the thresholding algorithm, which in this case is the Otsu algorithm. The `c` is a coefficient that is multiplied with the found threshold value to get the effective threshold. The `-ch` species the channel 0 for segmentation. The `-n` option specifies the name of the label path created. \
 
 Now also segment the other channel:
 ```
-zseg threshold -r -m otsu -c 1 -ch 1 -n otsu-c1-ch1 ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
+zseg threshold -r -m otsu -c 1 -ch 1 -n otsu-c1-ch1 --colormap viridis ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
 ```
 Note that the `-c` argument has been changed.
 
@@ -197,7 +197,7 @@ napari --plugin napari-ome-zarr https://s3.embl.de/ome-zarr-course/data/ZARR/$US
 It is also possible to apply binary postprocessing to the segmented data.
 #### Apply mathematical morphology
 ```
-zseg postprocess -r -m binary_opening -f 1,1 -l otsu-c1-ch1 ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
+zseg postprocess -r -m binary_opening -f 1,1 -l otsu-c1-ch1 --colormap viridis ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
 ```
 Here the `-m` specifies the postprocessing method; the `-f` determines the footprint shape. Depending on the shape of the input data, it can be 2 or 3-dimensional. The `-l` can be used to decide on the name of the label image, that is subjected to the postprocessing. 
 
