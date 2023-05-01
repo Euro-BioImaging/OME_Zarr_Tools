@@ -71,6 +71,7 @@ Although we are doing this practical on a cloud computer, you should be able to 
 #### Inspection of the remote datasets
 
 Check out what we have at our s3 bucket:
+
 ``` 
 mc tree s3minio/ome-zarr-course/
 mc ls s3minio/ome-zarr-course/data/MFF/
@@ -83,13 +84,17 @@ The remote datasets can be converted in a parallelised manner by using the `batc
 ```
 batchconvert omezarr -st s3 -dt s3 --drop_series data/MFF data/ZARR/$USER;
 ```
-This command will map each input file to a single OME-Zarr series. 
+This command will map each input file in the `data/MFF` folder to a single OME-Zarr series, which will be located in a specific directory for each user. 
 
-**Grouped conversion mode:**
+#### Grouped conversion mode:
+
+Another conversion mode will assume that the input files are part of the same series and thus will merge them along a specific axis during the conversion process.
 ```
 batchconvert omezarr -st s3 -dt s3 --drop_series --merge_files --concatenation_order t data/JPEG data/ZARR/$USER;
 ```
-### Check what has changed at the s3 end:
+The `merge_files` flag will ensure the grouped conversion option and the `--concatenation_order t` option will make sure that the files will be merged along the time channel. 
+
+#### Check what has changed at the s3 end after the conversion:
 mc tree -d 2 s3minio/ome-zarr-course/
 
 ### Copy the Zarr data to the home folder
