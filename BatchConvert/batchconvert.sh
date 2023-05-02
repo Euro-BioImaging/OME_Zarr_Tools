@@ -15,7 +15,7 @@ fi
 
 if [[ $process == 'configured_s3' ]];
   then
-    printf "Configuration of the default s3 credentials is complete\n";
+    printf "Configuration of the default s3 credentials for 'batchconvert' is complete\n";
 elif [[ $process == 'configured_bia' ]];
   then
     printf "Configuration of the default bia credentials is complete\n";
