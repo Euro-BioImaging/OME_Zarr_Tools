@@ -484,6 +484,8 @@ class ZarrSampler:
         self.__create_labels_path(labels_name, overwrite, new_labels)
 
         display = self.__get_display(labels, colormap)
+        if calculate_properties:
+            props = self.__get_props(labels)
         self.labels_resampled = scaler.Scaler(max_layer = self.num_resolutions - 1).nearest(labels)
 
         for i, lbl in enumerate(self.labels_resampled):
@@ -499,6 +501,8 @@ class ZarrSampler:
         # print(multimeta)
         self.labels_mroot.attrs['multiscales'] = multimeta ###
         self.labels_mroot.attrs['image-label'] = display
+        if calculate_properties:
+            self.labels_mroot.attrs['properties'] = props
 
     def drop_labels(self): # TODO
         pass
@@ -539,3 +543,30 @@ class ZarrSampler:
                             }
         self.display_metadata = display_metadata.copy()
         return display_metadata
+    def __get_props(self, lbld):
+        sample = lbld.copy()
+        while sample.ndim < 5:
+            sample = np.array([sample])
+        props = []
+        print('ndim is %s' % sample.ndim)
+        for frame in sample:
+            for channel in frame:
+                print(channel.ndim)
+                table = regionprops_table(channel,
+                                          properties = (  # 'num_pixels',
+                                              'area',
+                                              'axis_major_length',
+                                              'axis_minor_length',
+                                              'label'
+                                              )
+                                          )
+                lblnums = table['label']
+                for num in lblnums:
+                    lbldict = {}
+                    for key in table.keys():
+                        if key == 'label':
+                            lbldict['label-value'] = table[key][num - 1]
+                        else:
+                            lbldict[key] = table[key][num - 1]
+                    props.append(lbldict)
+        return props
