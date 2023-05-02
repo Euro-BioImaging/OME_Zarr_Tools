@@ -260,7 +260,7 @@ if __name__ == "__main__":
             f.seek(0)
             json.dump(jsonfile, f, indent = 2)
             f.truncate()
-        # print("Configuration of the default s3 credentials is complete")
+        # print("Configuration of the default s3 credentials for 'batchconvert' is complete")
         with open(os.path.join(scriptpath,  '.process'), 'w') as writer:
             writer.write('configured_s3')
         #sys.stdout.write('configured_s3') ### VERY IMPORTANT STEP
