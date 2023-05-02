@@ -1,4 +1,4 @@
-# OME-Zarr_Tools
+# OME_Zarr_Tools
 
 ## About
 
