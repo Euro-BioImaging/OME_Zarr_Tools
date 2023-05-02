@@ -97,6 +97,10 @@ Check out the array metadata for the highest resolution array:
 mc cat s3/ome-zarr-course/data/ZARR/common/13457537T.zarr/0/.zarray
 ```
 
+```
+ome_zarr info https://s3.embl.de/ome-zarr-course/data/ZARR/common/13457537T.zarr/0/.zarray
+```
+
 ### Conversion of the remote datasets
 
 The remote datasets can be converted in a parallelised manner by using the `batchconvert` tool. 
@@ -205,7 +209,7 @@ Here the `-m` specifies the postprocessing method; the `-f` determines the footp
 mc tree -d 2 s3/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr
 ```
 ```
-ome_zarr info mc tree -d 2 s3/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr
+ome_zarr info https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr
 ```
 Also visualise the data:
 ```
