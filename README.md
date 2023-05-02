@@ -57,10 +57,10 @@ Please follow those steps:
 1. Launch the BAND cloud computer (see instructions above)
 1. Open a Terminal window (see screenshot above)
 1. Open Firefox (see screenshot above) on the BAND.
-1. In Firefox browse to the Google Doc that has been shared with you (it is the same Google Doc that brought you to this page; you need to type the address starting with `tinyurl...` into the Firefox search bar and press enter)
-1. Copy the command (starting with `cd ~ ...`) from the Google Doc into the Terminal window and press enter
-1. This can take about 10 minutes.
-1. It should finish saying: `Configuration of the default s3 credentials is complete`
+1. In Firefox browse to the Google Doc containing the installation command (you need to type the address starting with `tinyurl...` into the Firefox search bar and press enter)
+1. Copy the installation command (starting with `cd ~ ...`) from the Google Doc into the Terminal window and press enter
+1. This can take about 10-20 minutes.
+1. Configuration of the default s3 credentials for 'zseg' is complete.
 
 ## Practical
 
