@@ -2,7 +2,7 @@
 
 ## About
 
-This repository contains materials for the practical on "Cloud hosted image data and cloud infrastructures" on 08.04.23 as part of the [NEUBIAS EOSC-Life Bioimage Analysis in the Cloud Workshop](http://eubias.org/NEUBIAS/training-schools/neubias-academy-home/defragmentation-training-school-2022/). The materials demonstrate working with OME-Zarr data located in S3 buckets. 
+This repository contains materials for the practical on "Cloud hosted image data and cloud infrastructures" on 08.04.23 as part of the [https://eubias.org/NEUBIAS/neubias2020-conference/portugal-2023/program-porto-2023-2/). The materials demonstrate working with OME-Zarr data located in S3 buckets. 
 
 
 ## Connect to the BAND cloud computer
