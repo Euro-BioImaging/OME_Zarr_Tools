@@ -90,7 +90,7 @@ if __name__ == '__main__':
             f.seek(0)
             json.dump(jsonfile, f, indent = 2)
             f.truncate()
-        print("Configuration of the default s3 credentials is complete")
+        print("Configuration of the default s3 credentials for zseg is complete.")
 
     ### Acquire the credentials and context already here
     configpath = os.path.join(scriptpath,  'configs', 's3credentials')
