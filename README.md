@@ -2,7 +2,7 @@
 
 ## About
 
-This project contains materials for the practical on "Cloud hosted image data and cloud infrastructures" on 30.09.22 as part of the [NEUBIAS EOSC-Life Bioimage Analysis in the Cloud Workshop](http://eubias.org/NEUBIAS/training-schools/neubias-academy-home/defragmentation-training-school-2022/). The materials demonstrate working with OME-Zarr data located in S3 buckets. 
+This project contains materials for the practical on "Cloud hosted image data and cloud infrastructures" on 08.04.23 as part of the [NEUBIAS EOSC-Life Bioimage Analysis in the Cloud Workshop](http://eubias.org/NEUBIAS/training-schools/neubias-academy-home/defragmentation-training-school-2022/). The materials demonstrate working with OME-Zarr data located in S3 buckets. 
 
 
 ## Connect to the BAND cloud computer
@@ -32,15 +32,22 @@ If you did not stop the recent session you can simply
 
 ## Software installation
 
-For this practical we need several software to be installed:
+https://docs.google.com/document/d/17a0w8hPPNX6SV4UiK6uCWKXnKtN5aKno-dxROUDcoO8/edit
 
-+ **napari_viewer** environment containing the napari package along with dependencies/plugins to support OME-Zarr format.
+For this practical we need several software to be installed:
 
 + **bf2raw** environment containing the bioformats2raw package, which can be used to convert images into OME-Zarr format.
 
 + **minio** environment containing the minio client mc, which enables interaction with s3 buckets.
 
++ **nflow** environment containing the workflow management system nextflow.
+
++ **ZarrSeg** environment containing the napari package along with dependencies/plugins to support OME-Zarr format
+and our command line tool, ZarrSeg, for segmentation of OME-Zarr data.
+
 + **fiji** exectuable containing a plugin for opening the OME-Zarr format.
+
++ **batchconvert** executable for parallelised conversion of image data and file transfer between the local filesystem and the s3 buckets.
 
 To install the software you will need to launch your BAND cloud computer (see above) and use Firefox and the terminal window.
 
@@ -55,135 +62,165 @@ Please follow those steps:
 1. In Firefox browse to the Google Doc that has been shared with you (it is the same Google Doc that brought you to this page; you need to type the address starting with `tinyurl...` into the Firefox search bar and press enter)
 1. Copy the command (starting with `cd ~ ...`) from the Google Doc into the Terminal window and press enter
 1. This can take about 10 minutes.
-1. It should finish saying: `Added s3minio successfully.`
+1. It should finish saying: `Configuration of the default s3 credentials is complete`
 
 ## Practical
 
-In general, everything that is formatted like this `command bla bla` should be copy and pasted into the BAND terminal window and enter should be pressed to execute that code.
+In general, everything that is formatted like this: `command bla bla` should be copy-pasted into the BAND terminal window and enter should be pressed to execute that code.
 
 Although we are doing this practical on a cloud computer, you should be able to reproduce all of this on a local (Linux) computer. Here [are the installation instructions](https://git.embl.de/oezdemir/course_scripts/-/tree/main/installation), which you may have to modify a bit, but the conda installation parts should work on any system. Let us know if you need help with that!
 
-### Inspection of OME-Zarr dataset
+### Inspection of the remote datasets
 
-Copy the remote OME-Zarr dataset to a local directory:
+Check out what we have at our s3 bucket:
 
-`mc mirror s3minio/ome-zarr-course/ome_zarr_data/xyzct_8bit__mitosis.zarr ~/ome_zarr_data/xyzct_8bit__mitosis.zarr`
+``` 
+mc tree -d 3 s3/ome-zarr-course/
+``` 
+``` 
+mc ls s3/ome-zarr-course/data/MFF/
+``` 
+``` 
+mc ls s3/ome-zarr-course/data/JPEG/
+```
+``` 
+mc ls s3/ome-zarr-course/data/ZARR/common/
+```
 
-Check what we have downloaded:
+Check out the multiscales metadata for one of the existing OME-Zarr datasets:
+``` 
+mc cat s3/ome-zarr-course/data/ZARR/common/13457537T.zarr/.zattrs
+```
 
-`ls -la ~/ome_zarr_data/xyzct_8bit__mitosis.zarr`
+Check out the array metadata for the highest resolution array:
+``` 
+mc cat s3/ome-zarr-course/data/ZARR/common/13457537T.zarr/0/.zarray
+```
 
-You see that the OME-Zarr image comprises several files and folders.
+```
+ome_zarr info https://s3.embl.de/ome-zarr-course/data/ZARR/common/13457537T.zarr
+```
 
-Inspect the `.zattrs` file, which contains some important metadata:
+### Creation of OME-Zarr from remote data
 
-`cat ~/ome_zarr_data/xyzct_8bit__mitosis.zarr/.zattrs`
+The remote datasets can be converted in a parallelised manner by using the `batchconvert` tool. 
 
-This tells you which axes your image data has (here: time, channel, z, y, x).
-It also tells you the pixel size, via the coordinateTransformations fields.
-Note that we have the coordinateTransformations three times, which means that the data is stored at three resolution levels.
-Note that the time, channel and z-dimensions are not downsampled, while the scale (pixel size) for x and y is increasing.
+#### First check out what data we have the s3 end:
+```
+mc tree -d 2 s3/ome-zarr-course/
+```
 
-Now we would like to know how the dimensions of the data, e.g. how many timepoints and channels.
-For this we inspect the array dimensions at the hightest (0) resolution level:
+#### Independent conversion of the input files:
+The followin command will map each input file in the `data/MFF` folder to a single OME-Zarr series, which will be located in a specific directory for each user. 
 
-`cat ~/ome_zarr_data/xyzct_8bit__mitosis.zarr/0/.zarray`
+```
+batchconvert omezarr -st s3 -dt s3 --drop_series data/MFF data/ZARR/$USER;
+```
+Note that the `-st s3` option will make sure that the input path is searched for in the s3 bucket, while `-dt s3` will trigger the output files to be transferred to the s3 bucket under the output path.
 
-The shape field contains the dimensions, you have to map them to the axes order that you retrieved with the command above.
+#### Grouped conversion mode:
 
-Let's look how the data is layed out on disc (this will also allow us to understand the chunking concept):
+Another conversion mode will assume that the input files are part of the same series and thus will merge them along a specific axis during the conversion process.
+```
+batchconvert omezarr -st s3 -dt s3 --drop_series --merge_files --concatenation_order t data/JPEG data/ZARR/$USER;
+```
+The `merge_files` flag will ensure the grouped conversion option and the `--concatenation_order t` option will make sure that the files will be merged along the time channel. 
 
-`tree -C -L 6 -a -v ~/ome_zarr_data/xyzct_8bit__mitosis.zarr`
+#### Check what has changed at the s3 end after the conversion:
+```
+mc tree -d 2 s3/ome-zarr-course/
+```
+```
+mc ls s3/ome-zarr-course/data/ZARR/$USER/
+```
 
-We see that there is a nested folder structure with one file for each xy plane.
-The nesting of the folders represents the resolution level and then the axes of the data.
-
-(Optional) we can also gain some basic information about a remotely located OME-Zarr dataset, without downloading anything:
-
-`ome_zarr info "https://s3.embl.de/ome-zarr-course/ome_zarr_data/xyzct_8bit__mitosis.zarr"`
-
-Here we see that the data has 3 resolution layers and its dimensions.
-
-Inspect a remote big image data file:
-
-`ome_zarr info "https://s3.embl.de/i2k-2020/platy-raw.ome.zarr"`
-
-This has larger dimensions and more resolution layers. 
+#### Copy the converted Zarr data to the home folder
+```
+mc mirror s3/ome-zarr-course/data/ZARR/$USER ~/data/ZARR;
+```
 
 ### Visualisation
 
-#### Open local OME-Zarr in napari
+#### Napari
 
-`napari --plugin napari-ome-zarr "~/ome_zarr_data/xyzct_8bit__mitosis.zarr"`
+Visualise the remote data using Napari together with the napari-ome-zarr plugin.
+```
+napari --plugin napari-ome-zarr https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/xyzct_8bit__mitosis.ome.zarr
+```
+Optional: visualise the local OME-Zarr data:
+```
+napari --plugin napari-ome-zarr ~/data/ZARR/xyzct_8bit__mitosis.ome.zarr
+```
 
-#### Open remote OME-Zarr in napari
+#### Fiji
+fiji ;
+[ Plugins > BigDataViewer > OME-Zarr > Open OME-Zarr from S3...]
 
-`napari --plugin napari-ome-zarr "https://s3.embl.de/ome-zarr-course/ome_zarr_data/xyzct_8bit__mitosis.zarr"`
+S3 URL: https://s3.embl.de/ome-zarr-course/data/ZARR/<YOUR-USER-NAME>/xyzct_8bit__mitosis.ome.zarr
 
-Big multi-resolution data:
+Observe the output in the console window while your are browsing around. You can see how chunks of data for fetched on demand (aka lazy-loading). This makes it possible to smoothly browse TB sized cloud hosted image data on any computer.
 
-`napari --plugin napari-ome-zarr "https://s3.embl.de/i2k-2020/platy-raw.ome.zarr"`
-
-When zooming in and out you may experience some lag, because napari currently needs to wait until the higher resolution data is loaded, before it can do the rendering.
-
-This would work just the same on your computer, if you install napari and the napari-ome-zarr plugin.
-
-#### Open remote OME-Zarr in Fiji
-
-`fiji`
-
-- `[ Plugins > BigDataViewer > OME-Zarr > Open OME-Zarr from S3...]`
-  - S3 URL: `https://s3.embl.de/ome-zarr-course/ome_zarr_data/xyzct_8bit__mitosis.zarr`
-  - [X] Log chunk loading
-- Observe the output in the console window while your are browsing around. You can see how chunks of data for fetched on demand (aka lazy-loading). This makes it possible to smoothly browse TB sized cloud hosted image data on any computer.
-
-Big multi-resolution data:
-
-- S3 URL: `https://s3.embl.de/i2k-2020/platy-raw.ome.zarr`
-
-Note that in BigDataViewer the browsing is smooth also for the big data, because it continues rendering even if some data still is missing.
-
-This would work just the same on your computer, if you install Fiji and the MoBIE update site.
-
-#### Open remote OME-Zarr in the browser with vizarr:
-
-- Please open Google Chrome on the BAND (for some reason this does not work with Firefox on the BAND).
-- `https://hms-dbmi.github.io/vizarr/?source=https://s3.embl.de/ome-zarr-course/ome_zarr_data/xyzct_8bit__mitosis.zarr`
+S3 URL: https://s3.embl.de/i2k-2020/platy-raw.ome.zarr
 
 
-Note that tou can also navigate to this web address on your local computer, in fact from any computer :)
+#### Web based viewing options
+Please open Google Chrome on the BAND (for some reason this does not work with Firefox on the BAND).
 
-Big multi-resolution data:
+https://kitware.github.io/itk-vtk-viewer/app/?fileToLoad=https://s3.embl.de/ome-zarr-course/data/ZARR/<$USER>/xyz_8bit__nucleus.ome.zarr 
 
-`https://hms-dbmi.github.io/vizarr/?source=https://s3.embl.de/i2k-2020/platy-raw.ome.zarr`
+https://hms-dbmi.github.io/vizarr/?source=https://s3.embl.de/ome-zarr-course/data/ZARR/<$USER>/xyzct_8bit__mitosis.ome.zarr 
 
-You may experience some lag...
+**add vizarr and neuroglancer**
+
+### Segmentation 
+
+We can also segment remotely located OME-Zarr data without explicitly downloading it.
+#### Examine the dataset that is to be segmented:
+```
+mc tree -d 2 s3/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr
+```
+#### Also view the data
+```
+napari --plugin napari-ome-zarr https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
+```
+
+#### Segment each channel
+We can use the zseg package for segmenting the data via thresholding.
+```
+zseg threshold -r -m otsu -c 1 -ch 0 -n otsu-c1-ch0 --colormap viridis ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
+```
+In this command, the `-r` flag ensures that the input path is searched at the s3 bucket. The `-m` option specifies the thresholding algorithm, which in this case is the Otsu algorithm. The `c` is a coefficient that is multiplied with the found threshold value to get the effective threshold. The `-ch` species the channel 0 for segmentation. The `-n` option specifies the name of the label path created. \
+
+Now also segment the other channel:
+```
+zseg threshold -r -m otsu -c 1 -ch 1 -n otsu-c1-ch1 --colormap viridis ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
+```
+Note that the `-c` argument has been changed.
+
+#### Have a look at the segmented data 
+```
+napari --plugin napari-ome-zarr https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
+```
+
+It is also possible to apply binary postprocessing to the segmented data.
+#### Apply mathematical morphology
+```
+zseg postprocess -r -m binary_opening -f 1,1 -l otsu-c1-ch1 --colormap viridis ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
+```
+Here the `-m` specifies the postprocessing method; the `-f` determines the footprint shape. Depending on the shape of the input data, it can be 2 or 3-dimensional. The `-l` can be used to decide on the name of the label image, that is subjected to the postprocessing. 
+
+#### Now examine the OME-Zarr data:
+```
+mc tree -d 2 s3/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr
+```
+```
+ome_zarr info https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr
+```
+Also visualise the data:
+```
+napari --plugin napari-ome-zarr https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
+```
 
 
-## Converting an image data to OME-Zarr
 
-Here the aim is to create OME-Zarr data and write it to an S3 bucket. 
 
-Download a directory with a TIFF image from the S3 bucket onto the BAND:
-
-`mc mirror s3minio/ome-zarr-course/image_data/ ~/image_data`
-
-Check what has been downloaded:
-
-`ls ~/image_data`
-
-Convert the TIFF image into OME-Zarr, using bioformats2raw:
-
-`bioformats2raw --compression null --resolutions 3 --scale-format-string '%2$d' ~/image_data/xyzct_8bit__mitosis.tif ~/ome_zarr_data/xyzct_8bit__mitosis_converted.zarr`
-
-Copy the local OME-Zarr data to a S3 bucket, using mc:
-
-`mc mirror ~/ome_zarr_data/xyzct_8bit__mitosis_converted.zarr s3minio/ome-zarr-course/ome_zarr_data/$USER/xyzct_8bit__mitosis_converted.zarr`
-
-Check that the data has been uploaded, using mc:
-
-`mc ls s3minio/ome-zarr-course/ome_zarr_data/`
-
-`mc ls s3minio/ome-zarr-course/ome_zarr_data/$USER/`
-
-Now you can again use the above methods to visualise your remote data :-)

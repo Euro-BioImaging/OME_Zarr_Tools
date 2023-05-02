@@ -1,16 +1,25 @@
 #!/usr/bin/env bash
 
 rel_SCRIPTPATH=$( dirname -- ${BASH_SOURCE[0]}; );
-source $rel_SCRIPTPATH/utils.sh
+source $rel_SCRIPTPATH/utils/utils.sh
 
-SCRIPTPATH=$(abspath $rel_SCRIPTPATH);
-chmod -R 777 $SCRIPTPATH;
+ROOT=$(abspath $rel_SCRIPTPATH);
+#APPS="$ROOT/apps"
 
+# Add root path as an environmental variable
+if ! echo $PATH | tr ":" "\n" | grep "OME_Zarr_Tools" &> /dev/null;
+then
+	echo "export OZT=$(abspath $rel_SCRIPTPATH)" >> $HOME/.bashrc;
+  source ~/.bashrc
+fi;
+
+chmod -R 777 $ROOT;
 source ~/.bashrc
+
 mkdir -p ~/Applications;
 cd ~/Applications;
 
-# Make sure FIJI is installed and the MoBIE plugin exists 
+# Make sure FIJI is installed and the MoBIE plugin exists
 if ! ls | grep Fiji.app &> /dev/null;
 then
 	wget https://downloads.imagej.net/fiji/latest/fiji-linux64.zip;
@@ -22,12 +31,6 @@ then
 	echo 'alias fiji=$HOME/Applications/Fiji.app/ImageJ-linux64' >> ~/.bashrc;
 fi;
 
-# if miniconda3 is not in the path, add it there:
-if ! echo $PATH | tr ":" "\n" | grep "conda" &> /dev/null;
-then
-	echo PATH="$HOME/miniconda3/bin:$PATH" >> $HOME/.bashrc;
-fi;
-
 # check if conda Miniconda3 already exists, otherwise download it
 if ! ls | grep Miniconda3 &> /dev/null;
 then
@@ -36,8 +39,8 @@ else
 	echo "Miniconda3 is already downloaded."
 fi;
 
-# grant permission for miniconda installation file and install miniconda 
-if ! command -v conda &> /dev/null; 
+# grant permission for miniconda envs file and install miniconda
+if ! command -v conda &> /dev/null;
 then
 	chmod +x Miniconda3-latest-Linux-x86_64.sh;
 	./Miniconda3-latest-Linux-x86_64.sh -b -u;
@@ -45,60 +48,66 @@ else
 	echo "Miniconda3 is already installed."
 fi;
 
+# if miniconda3 is not in the path, add it there:
+if ! echo $PATH | tr ":" "\n" | grep "conda" &> /dev/null;
+then
+	echo PATH="$HOME/miniconda3/bin:$PATH" >> $HOME/.bashrc;
+	source ~/.bashrc
+	if ! command -v conda &> /dev/null;
+  then
+    echo "conda added to the PATH and is available."
+  fi;
+fi;
+
 cd ~
 
 # Now create the environments from the yml files
-
-source ~/.bashrc
 if ! ls ~/miniconda3/envs | grep minio &> /dev/null;
-then 	
-	conda env create -f $SCRIPTPATH/minio_env.yml;
-	echo 'alias mc=$HOME/OME_Zarr_Tools/apps/mc.sh' >> ~/.bashrc;
+then
+	conda env create -f $ROOT/envs/minio_env.yml;
 fi;
 
-source ~/.bashrc
 if ! ls ~/miniconda3/envs | grep bf2raw &> /dev/null;
-then 	
-	conda env create -f $SCRIPTPATH/bf2raw_env.yml;
-	echo 'alias bioformats2raw=$HOME/OME_Zarr_Tools/apps/bioformats2raw.sh' >> ~/.bashrc;
-	echo 'alias tree=$HOME/OME_Zarr_Tools/apps/tree.sh' >> ~/.bashrc
+then
+	conda env create -f $ROOT/envs/bf2raw_env.yml;
 fi;
 
-source ~/.bashrc
 if ! ls ~/miniconda3/envs | grep ZarrSeg &> /dev/null;
-then 	
-	conda env create -f $SCRIPTPATH/ZarrSeg.yml;
-	echo 'alias napari=$HOME/OME_Zarr_Tools/apps/napari.sh' >> ~/.bashrc;
-	echo 'alias ome_zarr=$HOME/OME_Zarr_Tools/apps/ome_zarr.sh' >> ~/.bashrc
-#	echo 'alias ome_zarr=$HOME/OME_Zarr_Tools/apps/zseg.sh' >> ~/.bashrc
+then
+	conda env create -f $ROOT/envs/ZarrSeg.yml;
 fi;
 
-source ~/.bashrc
 if ! ls ~/miniconda3/envs | grep nflow &> /dev/null;
 then
-	conda env create -f $SCRIPTPATH/nextflow_env.yml;
-	echo 'alias nextflow=$HOME/OME_Zarr_Tools/apps/nextflow.sh' >> ~/.bashrc;
+  conda env create -f $ROOT/envs/nextflow_env.yml;
 fi;
 
-source ~/.bashrc
-if ! cat ~/.bashrc | grep batchonvert;
+# Add the apps folder to the path
+if ! echo $PATH | tr ":" "\n" | grep "apps" &> /dev/null;
 then
-  echo 'alias batchconvert=$HOME/OME_Zarr_Tools/BatchConvert/batchconvert.sh' >> ~/.bashrc;
+	echo "export PATH=$ROOT/apps:$PATH" >> $HOME/.bashrc;
+  source ~/.bashrc
+  echo "bf2raw, mc, napari, nextflow, ome_zarr and tree added to the PATH"
 fi;
-source ~/.bashrc;
 
 
-source ~/.bashrc
-if ! cat ~/.bashrc | grep zseg;
+# Add batchconvert and zseg to path
+if ! echo $PATH | tr ":" "\n" | grep "BatchConvert" &> /dev/null;
 then
-  echo 'alias zseg=$HOME/OME_Zarr_Tools/ZarrSeg/zseg' >> ~/.bashrc;
-  chmod 777 $HOME/OME_Zarr_Tools/ZarrSeg/main.py;
-  chmod 777 $HOME/OME_Zarr_Tools/ZarrSeg/zseg;
+	echo "export PATH=$ROOT/BatchConvert:$PATH" >> $HOME/.bashrc;
+  source ~/.bashrc
+  echo "BatchConvert added to the PATH"
 fi;
-source ~/.bashrc;
 
-### comment
-#### configure mc
+
+if ! echo $PATH | tr ":" "\n" | grep "ZarrSeg" &> /dev/null;
+then
+	echo "export PATH=$ROOT/ZarrSeg:$PATH" >> $HOME/.bashrc;
+	source ~/.bashrc;
+	echo "ZarrSeg added to the PATH"
+fi
+
+#### make access and secret keys universally available
 if ! cat $HOME/.bashrc | grep ACCESSKEY &> /dev/null;
 then
 	echo ACCESSKEY=$1 >> $HOME/.bashrc;
@@ -111,8 +120,9 @@ fi;
 
 source $HOME/.bashrc;
 
-chmod -R a+rwx $SCRIPTPATH/../apps;
-mc alias set s3minio https://s3.embl.de $ACCESSKEY $SECRETKEY;
+### configure mc
+chmod -R a+rwx $ROOT/apps;
+mc alias set s3 https://s3.embl.de $ACCESSKEY $SECRETKEY;
 
 source $HOME/.bashrc;
 
@@ -123,8 +133,8 @@ VP=${v_info:7:1}
 if [[ $VP == 3 ]];
   then
     printf "The following python will be used to execute python commands in batchconvert script: $( which python ) \n"
-    if ! [ -f $SCRIPTPATH/..BatchConvert/pythonexe ];then
-	    ln -s $( which python ) $SCRIPTPATH/../BatchConvert/pythonexe;
+    if ! [ -f $ROOT/BatchConvert/pythonexe ];then
+	    ln -s $( which python ) $ROOT/BatchConvert/pythonexe;
     fi
 elif ! [[ $VP == 3 ]];
   then
@@ -133,8 +143,8 @@ elif ! [[ $VP == 3 ]];
       then
 	      printf "python3 was found at $( which python3 ) \n";
 	      printf "This python will be used in the batchconvert script \n";
-        if ! [ -f $SCRIPTPATH/..BatchConvert/pythonexe ];then
-	        ln -s $( which python3 ) $SCRIPTPATH/..BatchConvert/pythonexe;
+        if ! [ -f $ROOT/BatchConvert/pythonexe ];then
+	        ln -s $( which python3 ) $ROOT/..BatchConvert/pythonexe;
         fi
       else
         printf "Looks like python3 does not exist on your system or is not on the path. Please make sure python3 exists and on the path. \n"
@@ -142,6 +152,10 @@ elif ! [[ $VP == 3 ]];
     fi
 fi
 # configure batchconvert s3
-batchconvert configure_s3_remote --remote s3minio --url https://s3.embl.de --access $ACCESSKEY --secret $SECRETKEY --bucket ome-zarr-course
+batchconvert configure_s3_remote --remote s3 --url https://s3.embl.de --access $ACCESSKEY --secret $SECRETKEY --bucket ome-zarr-course
+# configure zseg s3
+zseg configure_s3_remote --url s3.embl.de --access $ACCESSKEY --secret $SECRETKEY --region eu-west-2
+
+
 
 
