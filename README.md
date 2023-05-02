@@ -105,6 +105,11 @@ ome_zarr info https://s3.embl.de/ome-zarr-course/data/ZARR/common/13457537T.zarr
 
 The remote datasets can be converted in a parallelised manner by using the `batchconvert` tool. 
 
+#### First check out what data we have the s3 end:
+```
+mc tree -d 2 s3/ome-zarr-course/
+```
+
 #### Independent conversion of the input files:
 The followin command will map each input file in the `data/MFF` folder to a single OME-Zarr series, which will be located in a specific directory for each user. 
 
