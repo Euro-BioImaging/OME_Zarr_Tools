@@ -2,13 +2,11 @@
 
 ## About
 
-This repository contains materials for the practical on "Cloud hosted image data and cloud infrastructures" on 08.04.23 as part of the [https://eubias.org/NEUBIAS/neubias2020-conference/portugal-2023/program-porto-2023-2/). The materials demonstrate working with OME-Zarr data located in S3 buckets. 
-
+This repository contains materials for the practical on "Cloud hosted image data and cloud infrastructures" on 08.04.23 as part of the [Defragmentation Training School 2](https://eubias.org/NEUBIAS/neubias2020-conference/portugal-2023/program-porto-2023-2/). The materials demonstrate working with OME-Zarr data located in S3 buckets. 
 
 ## Connect to the BAND cloud computer
 
 In this practical we are using the [BAND](https://band.embl.de/#/eosc-landingpage) cloud computing.
-
 
 #### Connect the first time
 
