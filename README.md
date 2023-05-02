@@ -1,4 +1,4 @@
-# OME-Zarr course
+# OME-Zarr_Tools
 
 ## About
 
