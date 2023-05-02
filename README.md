@@ -66,7 +66,7 @@ Please follow those steps:
 
 ## Practical
 
-In general, everything that is formatted like this `command bla bla` should be copy and pasted into the BAND terminal window and enter should be pressed to execute that code.
+In general, everything that is formatted like this: `command bla bla` should be copy-pasted into the BAND terminal window and enter should be pressed to execute that code.
 
 Although we are doing this practical on a cloud computer, you should be able to reproduce all of this on a local (Linux) computer. Here [are the installation instructions](https://git.embl.de/oezdemir/course_scripts/-/tree/main/installation), which you may have to modify a bit, but the conda installation parts should work on any system. Let us know if you need help with that!
 
@@ -75,27 +75,26 @@ Although we are doing this practical on a cloud computer, you should be able to 
 Check out what we have at our s3 bucket:
 
 ``` 
-mc tree -d 3 s3minio/ome-zarr-course/
+mc tree -d 3 s3/ome-zarr-course/
 ``` 
 ``` 
-mc ls s3minio/ome-zarr-course/data/MFF/
+mc ls s3/ome-zarr-course/data/MFF/
 ``` 
 ``` 
-mc ls s3minio/ome-zarr-course/data/JPEG/
+mc ls s3/ome-zarr-course/data/JPEG/
 ```
-
 ``` 
-mc ls s3minio/ome-zarr-course/data/ZARR/common/
+mc ls s3/ome-zarr-course/data/ZARR/common/
 ```
 
 Check out the multiscales metadata for one of the existing OME-Zarr datasets:
 ``` 
-mc cat s3minio/ome-zarr-course/data/ZARR/common/13457537T.zarr/.zattrs
+mc cat s3/ome-zarr-course/data/ZARR/common/13457537T.zarr/.zattrs
 ```
 
 Check out the array metadata for the highest resolution array:
 ``` 
-mc cat s3minio/ome-zarr-course/data/ZARR/common/13457537T.zarr/0/.zarray
+mc cat s3/ome-zarr-course/data/ZARR/common/13457537T.zarr/0/.zarray
 ```
 
 ### Conversion of the remote datasets
@@ -120,15 +119,15 @@ The `merge_files` flag will ensure the grouped conversion option and the `--conc
 
 #### Check what has changed at the s3 end after the conversion:
 ```
-mc tree -d 2 s3minio/ome-zarr-course/
+mc tree -d 2 s3/ome-zarr-course/
 ```
 ```
-mc ls s3minio/ome-zarr-course/data/ZARR/$USER/
+mc ls s3/ome-zarr-course/data/ZARR/$USER/
 ```
 
 #### Copy the converted Zarr data to the home folder
 ```
-mc mirror s3minio/ome-zarr-course/data/ZARR/$USER ~/data/ZARR;
+mc mirror s3/ome-zarr-course/data/ZARR/$USER ~/data/ZARR;
 ```
 
 ### Visualisation
@@ -169,7 +168,7 @@ https://hms-dbmi.github.io/vizarr/?source=https://s3.embl.de/ome-zarr-course/dat
 We can also segment remotely located OME-Zarr data without explicitly downloading it.
 #### Examine the dataset that is to be segmented:
 ```
-mc tree -d 2 s3minio/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr
+mc tree -d 2 s3/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr
 ```
 #### Also view the data
 ```
@@ -203,10 +202,10 @@ Here the `-m` specifies the postprocessing method; the `-f` determines the footp
 
 #### Now examine the OME-Zarr data:
 ```
-mc tree -d 2 s3minio/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr
+mc tree -d 2 s3/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr
 ```
 ```
-ome_zarr info mc tree -d 2 s3minio/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr
+ome_zarr info mc tree -d 2 s3/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr
 ```
 Also visualise the data:
 ```
