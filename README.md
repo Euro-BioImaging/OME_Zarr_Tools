@@ -68,7 +68,7 @@ Please follow those steps:
 
 In general, everything that is formatted like this: `command bla bla` should be copy-pasted into the BAND terminal window and enter should be pressed to execute that code.
 
-Although we are doing this practical on a cloud computer, you should be able to reproduce all of this on a local (Linux) computer. Here [are the installation instructions](https://git.embl.de/oezdemir/course_scripts/-/tree/main/installation), which you may have to modify a bit, but the conda installation parts should work on any system. Let us know if you need help with that!
+Although we are doing this practical on a cloud computer, you should be able to reproduce all of this on a local (Linux) computer. [Here are the installation instructions]([https://git.embl.de/oezdemir/course_scripts/-/tree/main/installation](https://github.com/bugraoezdemir/OME_Zarr_Tools/blob/main/install.sh)), which you may have to modify a bit, but the conda installation parts should work on any system. Let us know if you need help with that!
 
 ### Inspection of the remote datasets
 
