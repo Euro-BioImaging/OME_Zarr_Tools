@@ -122,7 +122,7 @@ source $HOME/.bashrc;
 
 ### configure mc
 chmod -R a+rwx $ROOT/apps;
-mc alias set s3minio https://s3.embl.de $ACCESSKEY $SECRETKEY;
+mc alias set s3 https://s3.embl.de $ACCESSKEY $SECRETKEY;
 
 source $HOME/.bashrc;
 
@@ -152,7 +152,7 @@ elif ! [[ $VP == 3 ]];
     fi
 fi
 # configure batchconvert s3
-batchconvert configure_s3_remote --remote s3minio --url https://s3.embl.de --access $ACCESSKEY --secret $SECRETKEY --bucket ome-zarr-course
+batchconvert configure_s3_remote --remote s3 --url https://s3.embl.de --access $ACCESSKEY --secret $SECRETKEY --bucket ome-zarr-course
 # configure zseg s3
 zseg configure_s3_remote --url s3.embl.de --access $ACCESSKEY --secret $SECRETKEY --region eu-west-2
 
