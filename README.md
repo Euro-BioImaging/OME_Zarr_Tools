@@ -101,7 +101,7 @@ mc cat s3/ome-zarr-course/data/ZARR/common/13457537T.zarr/0/.zarray
 ome_zarr info https://s3.embl.de/ome-zarr-course/data/ZARR/common/13457537T.zarr
 ```
 
-### Conversion of the remote datasets
+### Creation of OME-Zarr from remote data
 
 The remote datasets can be converted in a parallelised manner by using the `batchconvert` tool. 
 
