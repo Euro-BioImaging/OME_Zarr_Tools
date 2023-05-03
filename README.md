@@ -2,7 +2,7 @@
 
 ## About
 
-This repository contains materials for the practical on "Cloud hosted image data and cloud infrastructures" on 08.04.23 as part of the [Defragmentation Training School 2](https://eubias.org/NEUBIAS/neubias2020-conference/portugal-2023/program-porto-2023-2/). The materials demonstrate working with OME-Zarr data located in S3 buckets. 
+This repository contains materials for the practical on "Cloud hosted image data and cloud infrastructures" on 08.05.23 as part of the [Defragmentation Training School 2](https://eubias.org/NEUBIAS/neubias2020-conference/portugal-2023/program-porto-2023-2/). The materials demonstrate working with OME-Zarr data located in S3 buckets. 
 
 ## Connect to the BAND cloud computer
 
@@ -66,7 +66,7 @@ Please follow those steps:
 
 In general, everything that is formatted like this: `command bla bla` should be copy-pasted into the BAND terminal window and enter should be pressed to execute that code.
 
-Although we are doing this practical on a cloud computer, you should be able to reproduce all of this on a local (Linux) computer. [Here are the installation instructions]([https://git.embl.de/oezdemir/course_scripts/-/tree/main/installation](https://github.com/bugraoezdemir/OME_Zarr_Tools/blob/main/install.sh)), which you may have to modify a bit, but the conda installation parts should work on any system. Let us know if you need help with that!
+Although we are doing this practical on a cloud computer, you should be able to reproduce all of this on a local (Linux) computer. [Here are the installation instructions](https://github.com/Euro-BioImaging/OME_Zarr_Tools/blob/main/install.sh), which you may have to modify a bit, but the conda installation parts should work on any system. Let us know if you need help with that!
 
 ### Inspection of the remote datasets
 
