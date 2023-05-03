@@ -164,11 +164,7 @@ S3 URL: https://s3.embl.de/i2k-2020/platy-raw.ome.zarr
 #### Web based viewing options
 Please open Google Chrome on the BAND (for some reason this does not work with Firefox on the BAND).
 
-https://kitware.github.io/itk-vtk-viewer/app/?fileToLoad=https://s3.embl.de/ome-zarr-course/data/ZARR/<$USER>/xyz_8bit__nucleus.ome.zarr 
-
 https://hms-dbmi.github.io/vizarr/?source=https://s3.embl.de/ome-zarr-course/data/ZARR/<$USER>/xyzct_8bit__mitosis.ome.zarr 
-
-**add vizarr and neuroglancer**
 
 ### Segmentation 
 
