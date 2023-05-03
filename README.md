@@ -217,7 +217,7 @@ ome_zarr info https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/23052022_D3_000
 Also visualise the data:
 ```
 napari --plugin napari-ome-zarr https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
-```
+``` 
 
 
 
