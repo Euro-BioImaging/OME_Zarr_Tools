@@ -154,7 +154,7 @@ napari --plugin napari-ome-zarr ~/data/ZARR/xyzct_8bit__mitosis.ome.zarr
 fiji ;
 [ Plugins > BigDataViewer > OME-Zarr > Open OME-Zarr from S3...]
 
-S3 URL: https://s3.embl.de/ome-zarr-course/data/ZARR/<YOUR-USER-NAME>/xyzct_8bit__mitosis.ome.zarr
+S3 URL: https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/xyzct_8bit__mitosis.ome.zarr
 
 Observe the output in the console window while your are browsing around. You can see how chunks of data for fetched on demand (aka lazy-loading). This makes it possible to smoothly browse TB sized cloud hosted image data on any computer.
 
@@ -218,7 +218,6 @@ Also visualise the data:
 ```
 napari --plugin napari-ome-zarr https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
 ```
-
 
 
 
