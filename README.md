@@ -9,7 +9,8 @@ This repository contains materials for the practical on "Cloud hosted image data
 In this practical we are using the [BAND](https://band.embl.de/#/eosc-landingpage) cloud computing.
 
 #### Connect the first time
-**Preliminary note:** Connection from Safari might be problematic in some systems. It is recommended to connect from Firefox.
+
+*Preliminary note: Connection from Safari might be problematic in some systems. It is recommended to connect from Firefox.*
 
 To connect to the BAND, please follow these steps:
 - Go to the [BAND](https://band.embl.de/#/eosc-landingpage) web site
@@ -50,12 +51,16 @@ To install the software you will need to launch your BAND cloud computer (see ab
 ![Image](docs/BAND_Terminal_Firefox.png)
 
 
-Please follow those steps:
+
+**Important** note: You cannot copy-paste anything from your local desktop into BAND as there is no direct communication between the two environments. For this reason,
+certain information, such as the installation command, has been shared with you via a tinyurl, which you can directly access from inside the BAND.
+
+Please follow those steps: 
 
 1. Launch the BAND cloud computer (see instructions above)
 1. Open a Terminal window (see screenshot above)
 1. Open Firefox (see screenshot above) on the BAND.
-1. In Firefox browse to the Google Doc shared with you (you can simply type the tinyurl provided in the doc into the Firefox search bar in BAND), which contains the installation command
+1. In Firefox browse to the Google Doc shared with you by typing the provided tinyurl into the Firefox search bar in BAND. This Google Doc contains the installation command.
 1. Copy the "Initial Installation" command (starting with `cd ~ ...`) from the Google Doc into the Terminal window and press enter
 1. This can take about 10-20 minutes.
 1. It should finish with the message: `Configuration of the default s3 credentials for 'zseg' is complete.`
