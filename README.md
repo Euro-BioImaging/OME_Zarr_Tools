@@ -52,8 +52,8 @@ To install the software you will need to launch your BAND cloud computer (see ab
 
 
 
-**Important** note: You cannot copy-paste anything from your local desktop into BAND as there is no direct communication between the two environments. For this reason,
-certain information, such as the installation command, has been shared with you via a tinyurl, which you can directly access from inside the BAND.
+**Important note:** You cannot copy-paste anything from your local desktop into BAND as there is no direct communication between the two environments. For this reason,
+certain information, such as the installation command, has been shared with you in a Google Doc linked to a tinyurl, which you can type into the Firefox search bar inside the BAND.
 
 Please follow those steps: 
 
