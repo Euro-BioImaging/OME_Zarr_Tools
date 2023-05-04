@@ -18,7 +18,7 @@ To connect to the BAND, please follow these steps:
 - Accept the terms of usage, to activate the login button
 - `[ Login ]`
   - Please use your Google account
-- Choose 4 CPU and 16 GB memory
+- Choose 4 CPU, 16 GB memory and 0 GPU
 - `[ Launch ]`
 - On the same page below, now `[ Go to Desktop ]`
 
