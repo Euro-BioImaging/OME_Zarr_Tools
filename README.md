@@ -9,9 +9,9 @@ This repository contains materials for the practical on "Cloud hosted image data
 In this practical we are using the [BAND](https://band.embl.de/#/eosc-landingpage) cloud computing.
 
 #### Connect the first time
+**Preliminary note:** Connection from Safari might be problematic in some systems. It is recommended to connect from Firefox.
 
 To connect to the BAND, please follow these steps:
-
 - Go to the [BAND](https://band.embl.de/#/eosc-landingpage) web site
 - Read the [user guide](https://docs.google.com/document/d/1TZBUsNIciGMH_g4aFj2Lu_upISxh5TV9FBMrvNDWmc8/edit?usp=sharing)
 - Accept the terms of usage, to activate the login button
