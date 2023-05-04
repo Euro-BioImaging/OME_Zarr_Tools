@@ -152,22 +152,36 @@ Optional: visualise the local OME-Zarr data:
 ```
 napari --plugin napari-ome-zarr ~/data/ZARR/xyzct_8bit__mitosis.ome.zarr
 ```
+Optional: visualise big remote OME-Zarr data:
+```
+napari --plugin napari-ome-zarr https://s3.embl.de/i2k-2020/platy-raw.ome.zarr
+```
+
 
 #### Fiji
 fiji ;
 [ Plugins > BigDataViewer > OME-Zarr > Open OME-Zarr from S3...]
 
-S3 URL: https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/xyzct_8bit__mitosis.ome.zarr
+Visualise the self-created OME-Zarr: 
+Note that you need to first replace $USER with your user name in the below url.
+S3 URL: https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/xyzct_8bit__mitosis.ome.zarr 
 
-Observe the output in the console window while your are browsing around. You can see how chunks of data for fetched on demand (aka lazy-loading). This makes it possible to smoothly browse TB sized cloud hosted image data on any computer.
-
+Visualise big remote OME-Zarr data in the same way:
 S3 URL: https://s3.embl.de/i2k-2020/platy-raw.ome.zarr
 
 
 #### Web based viewing options
 Please open Google Chrome on the BAND (for some reason this does not work with Firefox on the BAND).
 
-https://hms-dbmi.github.io/vizarr/?source=https://s3.embl.de/ome-zarr-course/data/ZARR/<$USER>/xyzct_8bit__mitosis.ome.zarr 
+Replace $USER with your user name in the following url and enter it in the Google Chrome's search bar:
+https://hms-dbmi.github.io/vizarr/?source=https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/xyzct_8bit__mitosis.ome.zarr 
+
+Optional: visualise big remote OME-Zarr data
+https://hms-dbmi.github.io/vizarr/?source=https://s3.embl.de/i2k-2020/platy-raw.ome.zarr 
+
+Optional: visualise a single well from an HCS data
+https://hms-dbmi.github.io/vizarr/?source=https://s3.embl.de/eosc-future/EUOS/testdata.zarr/A/1
+
 
 ### Segmentation 
 
