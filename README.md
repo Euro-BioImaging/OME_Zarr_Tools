@@ -10,7 +10,7 @@ In this practical we are using the [BAND](https://band.embl.de/#/eosc-landingpag
 
 #### Connect the first time
 
-*Preliminary note: Connection from Safari might be problematic in some systems. It is recommended to connect from Firefox.*
+*Preliminary note: Connection from Safari and Edge might be problematic in some systems. It is recommended to connect from Firefox.*
 
 To connect to the BAND, please follow these steps:
 - Go to the [BAND](https://band.embl.de/#/eosc-landingpage) web site
