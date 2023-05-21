@@ -54,9 +54,9 @@ then
 	echo PATH="$HOME/miniconda3/bin:$PATH" >> $HOME/.bashrc;
 	source ~/.bashrc
 	if ! command -v conda &> /dev/null;
-  then
-    echo "conda added to the PATH and is available."
-  fi;
+	  then
+	    echo "conda added to the PATH and is available."
+	fi;
 fi;
 
 cd ~
