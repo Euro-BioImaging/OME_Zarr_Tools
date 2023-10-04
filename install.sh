@@ -10,7 +10,7 @@ ROOT=$(abspath $rel_SCRIPTPATH);
 if ! echo $PATH | tr ":" "\n" | grep "OME_Zarr_Tools" &> /dev/null;
 then
 	echo "export OZT=$(abspath $rel_SCRIPTPATH)" >> $HOME/.bashrc;
-  source ~/.bashrc
+  	source ~/.bashrc
 fi;
 
 chmod -R 777 $ROOT;
@@ -54,9 +54,9 @@ then
 	echo PATH="$HOME/miniconda3/bin:$PATH" >> $HOME/.bashrc;
 	source ~/.bashrc
 	if ! command -v conda &> /dev/null;
-  then
-    echo "conda added to the PATH and is available."
-  fi;
+	  then
+	    echo "conda added to the PATH and is available."
+	fi;
 fi;
 
 cd ~
@@ -79,15 +79,15 @@ fi;
 
 if ! ls ~/miniconda3/envs | grep nflow &> /dev/null;
 then
-  conda env create -f $ROOT/envs/nextflow_env.yml;
+  	conda env create -f $ROOT/envs/nextflow_env.yml;
 fi;
 
 # Add the apps folder to the path
 if ! echo $PATH | tr ":" "\n" | grep "apps" &> /dev/null;
 then
 	echo "export PATH=$ROOT/apps:$PATH" >> $HOME/.bashrc;
-  source ~/.bashrc
-  echo "bf2raw, mc, napari, nextflow, ome_zarr and tree added to the PATH"
+  	source ~/.bashrc
+  	echo "bf2raw, mc, napari, nextflow, ome_zarr and tree added to the PATH"
 fi;
 
 
@@ -95,8 +95,8 @@ fi;
 if ! echo $PATH | tr ":" "\n" | grep "BatchConvert" &> /dev/null;
 then
 	echo "export PATH=$ROOT/BatchConvert:$PATH" >> $HOME/.bashrc;
-  source ~/.bashrc
-  echo "BatchConvert added to the PATH"
+  	source ~/.bashrc
+  	echo "BatchConvert added to the PATH"
 fi;
 
 

@@ -1,25 +1,24 @@
-# OME-Zarr course
+# OME_Zarr_Tools
 
 ## About
 
-This project contains materials for the practical on "Cloud hosted image data and cloud infrastructures" on 08.04.23 as part of the [NEUBIAS EOSC-Life Bioimage Analysis in the Cloud Workshop](http://eubias.org/NEUBIAS/training-schools/neubias-academy-home/defragmentation-training-school-2022/). The materials demonstrate working with OME-Zarr data located in S3 buckets. 
-
+This repository contains materials for the practical on "Cloud hosted image data and cloud infrastructures" on 08.05.23 as part of the [Defragmentation Training School 2](https://eubias.org/NEUBIAS/neubias2020-conference/portugal-2023/program-porto-2023-2/). The materials demonstrate working with OME-Zarr data located in S3 buckets. 
 
 ## Connect to the BAND cloud computer
 
 In this practical we are using the [BAND](https://band.embl.de/#/eosc-landingpage) cloud computing.
 
-
 #### Connect the first time
 
-To connect to the BAND, please follow these steps:
+*Preliminary note: Connection from Safari and Edge might be problematic in some systems. It is recommended to connect from Firefox.*
 
+To connect to the BAND, please follow these steps:
 - Go to the [BAND](https://band.embl.de/#/eosc-landingpage) web site
 - Read the [user guide](https://docs.google.com/document/d/1TZBUsNIciGMH_g4aFj2Lu_upISxh5TV9FBMrvNDWmc8/edit?usp=sharing)
 - Accept the terms of usage, to activate the login button
 - `[ Login ]`
   - Please use your Google account
-- Choose 4 CPU and 8 GB memory
+- Choose 4 CPU, 16 GB memory and 0 GPU
 - `[ Launch ]`
 - On the same page below, now `[ Go to Desktop ]`
 
@@ -31,8 +30,6 @@ If you did not stop the recent session you can simply
 - `[ Go to Desktop ]`
 
 ## Software installation
-
-https://docs.google.com/document/d/17a0w8hPPNX6SV4UiK6uCWKXnKtN5aKno-dxROUDcoO8/edit
 
 For this practical we need several software to be installed:
 
@@ -54,21 +51,25 @@ To install the software you will need to launch your BAND cloud computer (see ab
 ![Image](docs/BAND_Terminal_Firefox.png)
 
 
-Please follow those steps:
+
+**Important note:** You cannot copy-paste anything from your local desktop into BAND as there is no direct communication between the two environments. For this reason,
+certain information, such as the installation command, has been shared with you in a Google Doc linked to a tinyurl, which you can type into the Firefox search bar inside the BAND.
+
+Please follow those steps: 
 
 1. Launch the BAND cloud computer (see instructions above)
 1. Open a Terminal window (see screenshot above)
 1. Open Firefox (see screenshot above) on the BAND.
-1. In Firefox browse to the Google Doc that has been shared with you (it is the same Google Doc that brought you to this page; you need to type the address starting with `tinyurl...` into the Firefox search bar and press enter)
-1. Copy the command (starting with `cd ~ ...`) from the Google Doc into the Terminal window and press enter
-1. This can take about 10 minutes.
-1. It should finish saying: `Configuration of the default s3 credentials is complete`
+1. In Firefox browse to the Google Doc shared with you by typing the provided tinyurl into the Firefox search bar in BAND. This Google Doc contains the installation command.
+1. Copy the "Initial Installation" command (starting with `cd ~ ...`) from the Google Doc into the Terminal window and press enter
+1. This can take about 10-20 minutes.
+1. It should finish with the message: `Configuration of the default s3 credentials for 'zseg' is complete.`
 
 ## Practical
 
 In general, everything that is formatted like this: `command bla bla` should be copy-pasted into the BAND terminal window and enter should be pressed to execute that code.
 
-Although we are doing this practical on a cloud computer, you should be able to reproduce all of this on a local (Linux) computer. Here [are the installation instructions](https://git.embl.de/oezdemir/course_scripts/-/tree/main/installation), which you may have to modify a bit, but the conda installation parts should work on any system. Let us know if you need help with that!
+Although we are doing this practical on a cloud computer, you should be able to reproduce all of this on a local (Linux) computer. [Here are the installation instructions](https://github.com/Euro-BioImaging/OME_Zarr_Tools/blob/main/install.sh), which you may have to modify a bit, but the conda installation parts should work on any system. Let us know if you need help with that!
 
 ### Inspection of the remote datasets
 
@@ -151,26 +152,36 @@ Optional: visualise the local OME-Zarr data:
 ```
 napari --plugin napari-ome-zarr ~/data/ZARR/xyzct_8bit__mitosis.ome.zarr
 ```
+Optional: visualise big remote OME-Zarr data:
+```
+napari --plugin napari-ome-zarr https://s3.embl.de/i2k-2020/platy-raw.ome.zarr
+```
+
 
 #### Fiji
 fiji ;
 [ Plugins > BigDataViewer > OME-Zarr > Open OME-Zarr from S3...]
 
-S3 URL: https://s3.embl.de/ome-zarr-course/data/ZARR/<YOUR-USER-NAME>/xyzct_8bit__mitosis.ome.zarr
+Visualise the self-created OME-Zarr: 
+Note that you need to first replace $USER with your user name in the below url.
+S3 URL: https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/xyzct_8bit__mitosis.ome.zarr 
 
-Observe the output in the console window while your are browsing around. You can see how chunks of data for fetched on demand (aka lazy-loading). This makes it possible to smoothly browse TB sized cloud hosted image data on any computer.
-
+Visualise big remote OME-Zarr data in the same way:
 S3 URL: https://s3.embl.de/i2k-2020/platy-raw.ome.zarr
 
 
 #### Web based viewing options
 Please open Google Chrome on the BAND (for some reason this does not work with Firefox on the BAND).
 
-https://kitware.github.io/itk-vtk-viewer/app/?fileToLoad=https://s3.embl.de/ome-zarr-course/data/ZARR/<$USER>/xyz_8bit__nucleus.ome.zarr 
+Replace $USER with your user name in the following url and enter it in the Google Chrome's search bar:
+https://hms-dbmi.github.io/vizarr/?source=https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/xyzct_8bit__mitosis.ome.zarr 
 
-https://hms-dbmi.github.io/vizarr/?source=https://s3.embl.de/ome-zarr-course/data/ZARR/<$USER>/xyzct_8bit__mitosis.ome.zarr 
+Optional: visualise big remote OME-Zarr data
+https://hms-dbmi.github.io/vizarr/?source=https://s3.embl.de/i2k-2020/platy-raw.ome.zarr 
 
-**add vizarr and neuroglancer**
+Optional: visualise a single well from an HCS data
+https://hms-dbmi.github.io/vizarr/?source=https://s3.embl.de/eosc-future/EUOS/testdata.zarr/A/1
+
 
 ### Segmentation 
 
@@ -219,8 +230,7 @@ ome_zarr info https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/23052022_D3_000
 Also visualise the data:
 ```
 napari --plugin napari-ome-zarr https://s3.embl.de/ome-zarr-course/data/ZARR/$USER/23052022_D3_0002_positiveCTRL.ome.zarr;
-```
-
+``` 
 
 
 
