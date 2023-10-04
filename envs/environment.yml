@@ -1,0 +1,21 @@
+name: ome_zarr_env
+channels:
+  - euro-bioimaging/label/full-pkg 
+  - conda-forge
+  - bioconda
+  - ome
+  - hcc
+  - joshmoore
+dependencies:
+  - python ~= 3.9.0
+  - nb_conda_kernels
+  - napari
+  - matplotlib
+  - batchconvert
+  - zarr >= 2.4.0
+  - pip
+  - fiji
+  - pip:
+    - PyQT5~=5.13.1
+    - napari-ome-zarr
+    - https://github.com/Euro-BioImaging/ZarrSeg/archive/main.zip
