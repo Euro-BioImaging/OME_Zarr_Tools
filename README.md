@@ -2,68 +2,14 @@
 
 ## About
 
-This repository contains materials for the practical on "Cloud hosted image data and cloud infrastructures" on 08.05.23 as part of the [Defragmentation Training School 2](https://eubias.org/NEUBIAS/neubias2020-conference/portugal-2023/program-porto-2023-2/). The materials demonstrate working with OME-Zarr data located in S3 buckets. 
-
-## Connect to the BAND cloud computer
-
-In this practical we are using the [BAND](https://band.embl.de/#/eosc-landingpage) cloud computing.
-
-#### Connect the first time
-
-*Preliminary note: Connection from Safari and Edge might be problematic in some systems. It is recommended to connect from Firefox.*
-
-To connect to the BAND, please follow these steps:
-- Go to the [BAND](https://band.embl.de/#/eosc-landingpage) web site
-- Read the [user guide](https://docs.google.com/document/d/1TZBUsNIciGMH_g4aFj2Lu_upISxh5TV9FBMrvNDWmc8/edit?usp=sharing)
-- Accept the terms of usage, to activate the login button
-- `[ Login ]`
-  - Please use your Google account
-- Choose 4 CPU, 16 GB memory and 0 GPU
-- `[ Launch ]`
-- On the same page below, now `[ Go to Desktop ]`
-
-#### Re-connect to a session
-
-If you did not stop the recent session you can simply
-
-- Go to the [BAND](https://band.embl.de/#/eosc-landingpage) web site
-- `[ Go to Desktop ]`
+This repository provides material and guidance for working with image data stored in OME-Zarr format (and optionally in S3 buckets). 
 
 ## Software installation
 
-For this practical we need several software to be installed:
+Please clone this repository and build the environment using the following command:
 
-+ **bf2raw** environment containing the bioformats2raw package, which can be used to convert images into OME-Zarr format.
+`mamba env create -f OME-Zarr-Tools/envs/environment.yml`
 
-+ **minio** environment containing the minio client mc, which enables interaction with s3 buckets.
-
-+ **nflow** environment containing the workflow management system nextflow.
-
-+ **ZarrSeg** environment containing the napari package along with dependencies/plugins to support OME-Zarr format
-and our command line tool, ZarrSeg, for segmentation of OME-Zarr data.
-
-+ **fiji** exectuable containing a plugin for opening the OME-Zarr format.
-
-+ **batchconvert** executable for parallelised conversion of image data and file transfer between the local filesystem and the s3 buckets.
-
-To install the software you will need to launch your BAND cloud computer (see above) and use Firefox and the terminal window.
-
-![Image](docs/BAND_Terminal_Firefox.png)
-
-
-
-**Important note:** You cannot copy-paste anything from your local desktop into BAND as there is no direct communication between the two environments. For this reason,
-certain information, such as the installation command, has been shared with you in a Google Doc linked to a tinyurl, which you can type into the Firefox search bar inside the BAND.
-
-Please follow those steps: 
-
-1. Launch the BAND cloud computer (see instructions above)
-1. Open a Terminal window (see screenshot above)
-1. Open Firefox (see screenshot above) on the BAND.
-1. In Firefox browse to the Google Doc shared with you by typing the provided tinyurl into the Firefox search bar in BAND. This Google Doc contains the installation command.
-1. Copy the "Initial Installation" command (starting with `cd ~ ...`) from the Google Doc into the Terminal window and press enter
-1. This can take about 10-20 minutes.
-1. It should finish with the message: `Configuration of the default s3 credentials for 'zseg' is complete.`
 
 ## Practical
 
