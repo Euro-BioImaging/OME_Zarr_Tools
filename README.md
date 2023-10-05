@@ -13,9 +13,7 @@ Please clone this repository and build the environment using the following comma
 
 ## Practical
 
-In general, everything that is formatted like this: `command bla bla` should be copy-pasted into the BAND terminal window and enter should be pressed to execute that code.
-
-Although we are doing this practical on a cloud computer, you should be able to reproduce all of this on a local (Linux) computer. [Here are the installation instructions](https://github.com/Euro-BioImaging/OME_Zarr_Tools/blob/main/install.sh), which you may have to modify a bit, but the conda installation parts should work on any system. Let us know if you need help with that!
+Most of the demonstrated tools are mainly command line applications. So the commands given in the sections below can be copy-pasted to a terminal window and executed.
 
 ### Inspection of the remote datasets
 
