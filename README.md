@@ -10,6 +10,9 @@ Please clone this repository and build the environment using the following comma
 
 `mamba env create -f OME-Zarr-Tools/envs/environment.yml`
 
+Activate the environment:
+
+`mamba activate ome_zarr_tools`
 
 ## Practical
 
