@@ -12,7 +12,7 @@ Please clone this repository and build the environment using the following comma
 
 Activate the environment:
 
-`mamba activate ome_zarr_tools`
+`mamba activate ome_zarr_env`
 
 ## Practical
 
